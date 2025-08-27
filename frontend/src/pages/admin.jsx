@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Navbar from "../components/Navbar"
+import Header from "../components/Navbar"
 import { useRef } from "react"
 
 
@@ -41,7 +41,7 @@ function Admin(){
 
     }
 
-    return <><Navbar/>
+    return <><Header/>
    <div className="adminpage">
      <div className="admin">
     

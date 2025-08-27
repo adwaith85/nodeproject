@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import Navbar from "../components/Navbar"
+import Header from "../components/Navbar"
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
 
@@ -31,8 +31,11 @@ function Home(){
 
 
 
-    return<div className="body">
-    <Navbar/>
+    return<>
+
+    <Header/>
+    <div className="body">
+    
     
 {
     data.map(item=><>
@@ -50,6 +53,7 @@ function Home(){
         </>)
 }
     </div>
+    </>
 }
 
 export default Home
