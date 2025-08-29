@@ -8,21 +8,28 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from "react";
 
-function Header(){
-    const [name, setName] = useState("");
-    // const [data, setData] = useState([]);
-    const onsubmit = async () => {
-        const link = `http://localhost:8000/products/${name}`;
-        const res = await fetch(link);
-        const result = await res.json();
-        setName(result);
-    };
-useEffect(() => {
-    const t = setTimeout(() => onsubmit(), 1000)
+function Header({SetSearchItem}){
+  
 
-    return () => clearTimeout(t)
-  }, [name])
+    
 
+    // const getData=async()=>{
+
+    
+    //     let res=await fetch(`http://localhost:8000/products?search=${searchItem}`)
+        
+    //     let data=await res.json()
+
+    //     SetData(data)
+
+    // }
+
+    // useEffect(()=>{
+    //     getData()
+
+    // },[searchItem])
+  
+   
 
     const location=useLocation()
 
@@ -41,6 +48,7 @@ useEffect(() => {
           >
             <Link to={'/'} className="nav-link">HOME</Link>
     <Link to={'/admin'} className="nav-link">ADMIN</Link>
+    <Link to={'/Login'} className="nav-link">LOGIN</Link>
             <NavDropdown title="Link" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
@@ -58,7 +66,7 @@ useEffect(() => {
         {
             location.pathname==="/admin"?<></>: <Form className="d-flex">
                 <Form.Control
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => SetSearchItem(e.target.value)}
                 type="search"
                 placeholder="Search"
                 className="me-2"

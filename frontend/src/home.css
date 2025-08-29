@@ -1,7 +1,8 @@
 
 body{
     background: #e7baba;
-    ;
+    display: flex;
+    justify-content: center;
 }
 .body{
     margin-top:  100px;
@@ -99,3 +100,23 @@ input::placeholder{
         margin-top: 290px;
     }
 } */
+
+.reg-card{
+     border-radius: 20px;
+    /* padding: 30px; */
+    box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
+    backdrop-filter: blur(10px);
+    background-color: white;
+    border: 1px solid rgba(27, 164, 0, 0.18);
+    text-align: center;
+    width:fit-content;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 100px;
+    padding-top: 50px;
+
+}

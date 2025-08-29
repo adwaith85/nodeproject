@@ -7,9 +7,13 @@ function Home(){
     
     const [data,SetData]=useState([])
 
+    const [searchItem,SetSearchItem]=useState("")
+
     const getData=async()=>{
 
-        let res=await fetch("http://localhost:8000/products")
+    
+        let res=await fetch(`http://localhost:8000/products?search=${searchItem}`)
+        
         let data=await res.json()
 
         SetData(data)
@@ -19,7 +23,7 @@ function Home(){
     useEffect(()=>{
         getData()
 
-    },[])
+    },[searchItem])
      
     const deleteItem=async(id)=>{
         await fetch(`http://localhost:8000/products/${id}`,{  
@@ -33,7 +37,7 @@ function Home(){
 
     return<>
 
-    <Header/>
+    <Header SetSearchItem={SetSearchItem}/>
     <div className="body">
     
     

@@ -3,7 +3,11 @@ import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
-import Item from "./model.js"
+import Item from "./model/model.js"
+
+
+import ProductRoute from "./route/product.js"
+import AuthROute from "./route/auth.js"
 
 dotenv.config()
 const MONGO_URL=process.env.MONGO_URL
@@ -17,41 +21,14 @@ app.use(cors())
 
 const items=[]
 
-app.get("/products",async(req,res)=>{
-    console.log("get request")
+app.use(ProductRoute)
 
-    const items=await Item.find({}) 
+app.use(AuthROute)
 
-    res.json(items)
+// app.get("/products",item)
 
-})
+// app.post("/products",itemadd)
 
-app.post("/products",(req,res)=>{
-    const {name,image,price}=req.body
-    
-
-
-    console.log(name,image,price)
-
-    Item.create({name,image,price})
-
-    res.send("ok created")
-
-})
-
-app.delete("/products/:id",async(req,res)=>{
-    try{   
-    const {id}=req.params
-    console.log(id)
-
-    await Item.findByIdAndDelete(id) 
-    
-     }catch(err){
-        console.log(err)
-    }
- 
-    res.send("deleted")
-
-})
+// app.delete("/products/:id",deleteitem)
 
 app.listen(PORT,()=>console.log(`running on ${PORT}`))
