@@ -1,5 +1,5 @@
 import { useState } from "react"
-import Header from "../components/Navbar"
+import Navbar from "../components/Navbar"
 import { useRef } from "react"
 
 
@@ -35,13 +35,13 @@ function Admin(){
             
         Setloading(false)
             
-        }, 2000);
+        }, 1000);
 
     
 
     }
 
-    return <><Header/>
+    return <><Navbar/>
    <div className="adminpage">
      <div className="admin">
     
@@ -54,9 +54,10 @@ function Admin(){
 
    
     {
-        loading?<h1>Loading...</h1>: <button onClick={Uplodad}>SUBMIT</button>
+        loading?<h4>Loading...</h4>: <button onClick={Uplodad}>SUBMIT</button>
     }
     
+    {/* </div> */}
     </div>
     </div>
     </>
