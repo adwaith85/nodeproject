@@ -1,5 +1,7 @@
 import Usermodel from "../model/userModel.js"
 
+import jwt from 'jsonwebtoken'
+
 export const register=async(req,res)=>{
     const {email,password}=req.body
 
@@ -21,7 +23,12 @@ export const login=async(req,res)=>{
         const isMatch=await user.comparePassword(password)
 
         if(isMatch){
-            res.send("login done")
+            const token=jwt.sign({email:user.email}, 'qwerty', { expiresIn: '24h' });
+
+            res.json({
+                status:"login done",
+                token:token
+            })
         }else{
             res.send("wrong password")
         }
