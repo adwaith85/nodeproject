@@ -3,11 +3,14 @@ import Navbar from "../components/Navbar"
 
 import { useNavigate } from "react-router-dom"
 
+import AuthStore from "../AuthStore"
 
 function Login() {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
+    const {addToken}=AuthStore()
+
 
     const onClick = async () => {
         let res = await fetch("http://localhost:8000/login", {
@@ -31,7 +34,7 @@ function Login() {
         let token = data.token;
 
         if (token) {
-            localStorage.setItem("token",token)
+           addToken(token)
             navigate("/")
         } else {
             console.error("Token not found in response.");

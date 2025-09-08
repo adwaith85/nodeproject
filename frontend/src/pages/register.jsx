@@ -1,59 +1,83 @@
-import { useState } from "react"
-import { useRef } from "react"
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-function Register(){
-const nameref=useRef()
-    const emailref=useRef()
-    const numberref=useRef()
-        const passwordref=useRef()
-    
+function Register() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
-        const [name,setName]=useState("")
-        const [email,setEmail]=useState("")
-        const [number,setNumber]=useState("")
-        const [password,setPassword]=useState("")
-        const [loading,Setloading]=useState(false)
+  const [loading, setLoading] = useState(false);
 
-        const Uplodad=async()=>{
-        Setloading(true)
-        setTimeout(async() => {
-            await fetch("http://localhost:8000/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name: name,
-                    email:email,
-                    number: number,
-                    password: password
-                })
-            })
-            nameref.current.value=""
-            emailref.current.value=""
-            numberref.current.value=""
-            passwordref.current.value=""
+  const Upload = async (data) => {
+    setLoading(true);
 
-             Setloading(false)
-            
-        }, 1000);
-        }
+    setTimeout(async () => {
+      try {
+        await fetch("http://localhost:8000/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data), // ✅ get values directly from react-hook-form
+        });
 
+        reset(); // ✅ clears all fields
+      } catch (err) {
+        console.error("Error:", err);
+      } finally {
+        setLoading(false);
+      }
+    }, 1000);
+  };
 
+  return (
+    <div className="reg-card">
+      <form onSubmit={handleSubmit(Upload)}>
+        <input
+          type="text"
+          placeholder="name"
+          {...register("name", { required: "Namesss is required" })}
+        />
+        {errors.name && <p>{errors.name.message}</p>}
+        <br />
 
-    return<div className="reg-card">
-        
-    <input ref={nameref} type="text" placeholder="name" onChange={e=>setName(e.target.value)}></input><br/>
-    <input ref={emailref} type="email" placeholder="email" onChange={e=>setEmail(e.target.value)}/><br/>
-    <input ref={numberref} type="number" placeholder="number" onChange={e=>setNumber(e.target.value)}/><br/>
-    <input ref={passwordref} type="password" placeholder="password" onChange={e=>setPassword(e.target.value)}/><br/>
-    
-    {
-    loading?<h4>registered</h4>: <button onClick={Uplodad}>SUBMIT</button>
-}
+        <input
+          type="email"
+          placeholder="email"
+          {...register("email", { required: "Email is required" })}
+        />
+        {errors.email && <p>{errors.email.message}</p>}
+        <br />
+
+        <input
+          type="number"
+          placeholder="number"
+          {...register("number", { required: "Number is required" })}
+        />
+        {errors.number && <p>{errors.number.message}</p>}
+        <br />
+
+        <input
+          type="password"
+          placeholder="password"
+          {...register("password", { required: "Password is required",
+           minLength: { value: 6, message: "Password must be at least 6 characters" }
+        })}
+        />
+        {errors.password && <p>{errors.password.message}</p>}
+        <br />
+
+        {loading ? (
+          <h4>registered</h4>
+        ) : (
+          <button type="submit">SUBMIT</button>
+        )}
+      </form>
     </div>
-
+  );
 }
 
-
-export default Register
+export default Register;
