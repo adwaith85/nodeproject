@@ -7,6 +7,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button"; 
 import CartStore from "../store";
 import { Link } from "react-router-dom";
+import Header from "../components/Navbar";
 
 function Cart() {
   const { cart, remove } = CartStore();
@@ -21,8 +22,9 @@ function Cart() {
 
   return (
     <>
-      <h2>Your Cart</h2>
-      <Link to={'/'}>HOME</Link>
+      
+      <Header/>
+      <center><h2>Your Cart</h2></center>
       <Container>
         <Row>
           {cart.map((item) => (

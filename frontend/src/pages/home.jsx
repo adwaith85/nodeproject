@@ -91,9 +91,9 @@ function Home() {
 {
     token?
         <Container fluid>
-            <Row className="g-2">
+            <Row >
                 {data.map(item => (
-                    <Col key={item.id} className="g-4">
+                    <Col key={item.id} >
                         <Detail
                             additem={additem}
                             image={item.image}
@@ -127,7 +127,7 @@ function Detail(props) {
 
     return (
 
-        <Card className="card" style={{ width: '18rem', backgroundColor: "", margin: "20px" }}>
+        <Card className="card" >
             <ListGroup variant="flush">
                 <ListGroup.Item><img style={{ width: '13rem', height: '10rem' }} src={item.image}></img></ListGroup.Item>
                 <ListGroup.Item>{item.name}</ListGroup.Item>

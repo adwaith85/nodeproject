@@ -42,7 +42,7 @@ function Admin(){
     }
 
     return <><Navbar/>
-   <div className="adminpage">
+
      <div className="admin">
     
     <h1>ADD NEW PROUDUCT</h1>
@@ -59,7 +59,7 @@ function Admin(){
     
     {/* </div> */}
     </div>
-    </div>
+    
     </>
 }
 

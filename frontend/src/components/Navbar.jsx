@@ -29,10 +29,10 @@ const {removeToken,token}=AuthStore()
 
   return <>
     <Navbar expand="md" className="">
-      <Container fluid>
+      <Container fluid className="toggle">
         
-        <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll">
+        <Navbar.Toggle aria-controls="navbarScroll"  />
+        <Navbar.Collapse id="navbarScroll" >
           <Nav
             className="navcontent"
             style={{ maxHeight: '200px' }}

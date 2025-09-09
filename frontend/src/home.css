@@ -56,6 +56,59 @@ input{
 input::placeholder{
     color: rgb(192, 164, 164);    
 } */
+body{
+    background: linear-gradient(to right bottom , rgb(134, 107, 107),rgb(153, 123, 76));
+    
+    
+    
+}
+
+
+.admin{
+     border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
+    backdrop-filter: blur(10px);
+    background-color: #efd7d7;
+    border: 1px solid rgba(27, 164, 0, 0.18);
+    text-align: center;
+    width:50%;
+    justify-content: center;
+    justify-items: center;
+    margin: auto;
+    height: auto;
+    margin-top: 90px;
+
+    
+    
+}
+
+.admin  h1:hover{
+    color: rgb(214, 106, 106);
+    transition: cubic-bezier(0.77, 0, 0.175, 1);
+    transition-duration: 1s;
+}
+.admin input{
+    border-radius: 10px;
+    
+    margin-top: 10px;
+
+}
+.admin input:hover{
+    background-color: rgb(234, 240, 241);
+    text-align: center;
+}
+
+.admin button{
+    border-radius: 10px;
+    
+    margin-top: 10px;
+}
+.admin button:hover{
+    background-color: rgb(101, 126, 120);
+}
+
+
 
 .navbar{
     width: 100%;
@@ -72,14 +125,52 @@ input::placeholder{
     
 }
 
-.navsearch{
+.navsearch {
     align-items: center;
     justify-content:right;
     justify-items: flex-end;
-    display: flex;
+    display:flex;
+    
     gap: 1.3rem;
     margin-right: 20px;
     
+}
+.navsearch input{
+    justify-content: right;
+    margin-left: 500px;
+}
+
+.toggle input{
+    margin: 0px;
+    
+}
+.card{
+   
+    font-family: 'Times New Roman', Times, serif;
+    font-size: large;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
+    backdrop-filter: blur(10px);
+    display: flex;    
+    overflow: hidden;
+    height: 400px;
+    width:300px;
+    margin: 50px;
+    font-size: larger;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    
+    
+}
+.card button{
+    border-radius: 10px;
+    font-variant: small-caps;
+    font-style: oblique;
+}
+
+.card button:hover{
+    background-color: rgb(84, 95, 56);
+    border-radius: 30px;
 }
 
 
