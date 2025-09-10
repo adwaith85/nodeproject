@@ -26,9 +26,6 @@ export const item=async(req,res)=>{
 
 export const itemadd=(req,res)=>{
     const {name,image,price}=req.body
-    
-
-
     console.log(name,image,price)
 
     Item.create({name,image,price})

@@ -5,7 +5,7 @@ import cors from "cors"
 import mongoose from "mongoose"
 import Item from "./model/model.js"
 
-
+import CategoryROute from "./route/category.js"
 import ProductRoute from "./route/product.js"
 import AuthROute from "./route/auth.js"
 
@@ -24,6 +24,8 @@ const items=[]
 app.use(ProductRoute)
 
 app.use(AuthROute)
+
+app.use(CategoryROute)
 
 // app.get("/products",item)
 

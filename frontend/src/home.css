@@ -57,7 +57,8 @@ input::placeholder{
     color: rgb(192, 164, 164);    
 } */
 body{
-    background: linear-gradient(to right bottom , rgb(134, 107, 107),rgb(153, 123, 76));
+    
+    background: linear-gradient(to right , rgb(134, 107, 107),rgb(153, 123, 76));
     
     
     
@@ -72,7 +73,7 @@ body{
     background-color: #efd7d7;
     border: 1px solid rgba(27, 164, 0, 0.18);
     text-align: center;
-    width:50%;
+    width:480px;
     justify-content: center;
     justify-items: center;
     margin: auto;
@@ -83,7 +84,7 @@ body{
     
 }
 
-.admin  h1:hover{
+.admin h1:hover{
     color: rgb(214, 106, 106);
     transition: cubic-bezier(0.77, 0, 0.175, 1);
     transition-duration: 1s;
@@ -125,6 +126,13 @@ body{
     
 }
 
+.navcontent:hover{
+    color:aqua ;
+}
+
+
+
+
 .navsearch {
     align-items: center;
     justify-content:right;
@@ -135,6 +143,7 @@ body{
     margin-right: 20px;
     
 }
+
 .navsearch input{
     justify-content: right;
     margin-left: 500px;
@@ -144,6 +153,8 @@ body{
     margin: 0px;
     
 }
+
+
 .card{
    
     font-family: 'Times New Roman', Times, serif;
@@ -171,6 +182,51 @@ body{
 .card button:hover{
     background-color: rgb(84, 95, 56);
     border-radius: 30px;
+}
+
+.reg-card{
+     border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 39px rgba(0, 12, 29, 0.37);
+    backdrop-filter: blur(10px);
+    background-color: rgb(209, 209, 209);
+    border: 1px solid rgba(27, 164, 0, 0.18);
+    text-align: center;
+    width:fit-content;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 100px;
+    padding-top: 50px;
+
+}
+
+.reg-card input{
+    border-radius: 10px;
+    margin: 10px;
+    text-align: center;
+    
+    background-color: #bbb6b6;
+}
+.reg-card button:hover{
+        border-radius: 20px;
+        background-color: #bbb6b6;
+}
+
+.reg-card a{
+    text-decoration: none;
+    color: rgb(0, 9, 174);
+    font-size: larger;
+    transition:  0.1s ease;
+}
+.reg-card a:hover{
+    font-size: large;
+    background: rgb(181, 179, 179);
+    border-radius: 5px;
+    transform: scale(1.5);
 }
 
 

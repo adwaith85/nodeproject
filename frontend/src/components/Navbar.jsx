@@ -43,12 +43,12 @@ const {removeToken,token}=AuthStore()
             <Link to={'/admin'} className="nav-link">ADMIN</Link>
             <Link to={'/Login'} className="nav-link">LOGIN</Link>
            {
-              token? <button onClick={() => {
+              token? <button className="nav-link" style={{textAlign:"left"}} onClick={() => {
              
 
               removeToken()
         
-            }}>logout</button>:<></>
+            }}>LOGOUT</button>:<></>
            }
             
           </Nav>
@@ -58,7 +58,7 @@ const {removeToken,token}=AuthStore()
                 onChange={(e) => SetSearchItem(e.target.value)}
                 type="search"
                 placeholder="Search"
-                className="me"
+                className=""
                 aria-label="Search"
               />
               <Button variant="outline-success">Search</Button>

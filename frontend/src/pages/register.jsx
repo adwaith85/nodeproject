@@ -21,10 +21,10 @@ function Register() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data), // ✅ get values directly from react-hook-form
+          body: JSON.stringify(data), 
         });
 
-        reset(); // ✅ clears all fields
+        reset();
       } catch (err) {
         console.error("Error:", err);
       } finally {
@@ -35,11 +35,12 @@ function Register() {
 
   return (
     <div className="reg-card">
+      <h2>Registration</h2>
       <form onSubmit={handleSubmit(Upload)}>
         <input
           type="text"
           placeholder="name"
-          {...register("name", { required: "Namesss is required" })}
+          {...register("name", { required: "Name is required" })}
         />
         {errors.name && <p>{errors.name.message}</p>}
         <br />
