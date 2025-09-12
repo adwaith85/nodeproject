@@ -18,17 +18,17 @@ export const item=async(req,res)=>{
 
     console.log("get request",item)
 
-    const items=await Item.find({}) 
+    const items=await Item.find({}).populate("category").exec() 
 
     res.json(items)
 
 }
 
 export const itemadd=(req,res)=>{
-    const {name,image,price}=req.body
+    const {name,image,price,category}=req.body
     console.log(name,image,price)
 
-    Item.create({name,image,price})
+    Item.create({name,image,price,category})
 
     res.send("ok created")
 

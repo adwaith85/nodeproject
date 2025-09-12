@@ -16,7 +16,10 @@ function Home() {
 
     const [data, SetData] = useState([])
     const [cart, setCart] = useState()
+    
+    const [categorylist,setCategorylist]=useState([])
     const [searchItem, SetSearchItem] = useState("")
+
     const navigate = useNavigate()
     const {token}=AuthStore()
 
@@ -46,55 +49,58 @@ function Home() {
         SetData(data)
 
     }
-
     const additem = (item) => {
         setCart((prev) => [...prev, item])
     }
 
-
-
-    useEffect(() => {
+     useEffect(() => {
         getData()
 
     }, [searchItem])
 
-    const deleteItem = async (id) => {
-        await fetch(`http://localhost:8000/products/${id}`, {
-            method: "DELETE"
-        })
-        SetData(currentdata => currentdata.filter(item => item._id !== id))
 
+
+
+    const getCategory=async()=>{
+        let res =await fetch("http://localhost:8000/category",{
+            method:"GET",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            
+        })
+        let data=await res.json()
+        setCategorylist(data)
     }
+   
+    useEffect(()=>{
+        getCategory()
+    },[])
+
+    // const deleteItem = async (id) => {
+    //     await fetch(`http://localhost:8000/products/${id}`, {
+    //         method: "DELETE"
+    //     })
+    //     SetData(currentdata => currentdata.filter(item => item._id !== id))
+
+    // }
 
 
 
     return <>
 
         <Header SetSearchItem={SetSearchItem} />
-        {/* <div className="body">
-
-
-            {
-                data.map(item => <>
-                    <Card className="card" style={{ width: '18rem', backgroundColor: "", margin: "20px" }}>
-                        <ListGroup variant="flush">
-                            <ListGroup.Item><img style={{ width: '13rem', height: '10rem' }} src={item.image}></img></ListGroup.Item>
-                            <ListGroup.Item>{item.name}</ListGroup.Item>
-                            <ListGroup.Item>{item.price}</ListGroup.Item>
-                            <ListGroup.Item><button onClick={() => deleteItem(item._id)}>DELETE</button></ListGroup.Item>
-
-                        </ListGroup>
-                    </Card>
-
-
-                </>)
-            }
-        </div> */}
+       <h2>
+        {
+            categorylist.map(item=><div>{item.name}</div>)
+        }
+       </h2>
 
             
 
 {
     token?
+        
         <Container fluid>
             <Row >
                 {data.map(item => (
@@ -105,6 +111,7 @@ function Home() {
                             name={item.name}
                             price={item.price}
                         id={item._id}
+                        category={item?.category??""}
                         />
                     </Col>
                 ))}
@@ -127,7 +134,8 @@ function Detail(props) {
         id: props.id,
         image: props.image,
         name: props.name,
-        price: props.price
+        price: props.price,
+        category:props.category
     };
 
     return (
@@ -137,6 +145,9 @@ function Detail(props) {
                 <ListGroup.Item><img style={{ width: '13rem', height: '10rem' }} src={item.image}></img></ListGroup.Item>
                 <ListGroup.Item>{item.name}</ListGroup.Item>
                 <ListGroup.Item>{item.price}</ListGroup.Item>
+                <ListGroup.Item>
+                     {item?.category?.name ?? "no category"}
+                    </ListGroup.Item>
                 <button onClick={() =>{
                     console.log(item)
                     add(item)
@@ -145,6 +156,7 @@ function Detail(props) {
 
             </ListGroup>
         </Card>
+        
 
     );
 }

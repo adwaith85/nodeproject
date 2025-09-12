@@ -20,5 +20,14 @@ export const addcategory=async(req,res)=>{
 }
 
 export const deletecategory=async(req,res)=>{
+     try{   
+    const {id}=req.params
+    console.log(id)
+     await Category.findByIdAndDelete(id) 
+    res.send("deleted")
+     }catch(err){
+        console.log(err)
+    }
+ 
     
 }

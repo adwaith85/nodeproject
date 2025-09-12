@@ -70,10 +70,10 @@ body{
     padding: 30px;
     box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
     backdrop-filter: blur(10px);
-    background-color: #efd7d7;
+    background-color:rgb(209, 209, 209);
     border: 1px solid rgba(27, 164, 0, 0.18);
     text-align: center;
-    width:480px;
+    width:440px;
     justify-content: center;
     justify-items: center;
     margin: auto;
@@ -109,6 +109,20 @@ body{
     background-color: rgb(101, 126, 120);
 }
 
+select{
+    width: 190px;
+    margin: 10px;
+    border: 2px solid black;
+    border-radius: 8px;
+    text-align: center;
+    height: 26px;
+    font-size: 15px;
+}
+option{
+    width: 190px;
+    border: 2px solid black;
+    border-radius: 8px;
+}
 
 
 .navbar{

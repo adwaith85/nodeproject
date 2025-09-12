@@ -3,7 +3,13 @@ import mongoose from "mongoose";
 const itemSchema=new mongoose.Schema({
     name:String ,
     image:String,
-    price:String    
+    price:String,
+    category:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Category",
+        required:true
+    }
+        
 })
 
  const Item=mongoose.model("Item",itemSchema);

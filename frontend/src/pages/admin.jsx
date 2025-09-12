@@ -16,6 +16,8 @@ function Admin() {
     const [loading, Setloading] = useState(false)
     const [categories,SetCategory]=useState([])
 
+    const [selectCategory,SetSelectedCategory]=useState("")
+
     const Uplodad = async () => {
         Setloading(true)
         setTimeout(async () => {
@@ -27,7 +29,8 @@ function Admin() {
                 body: JSON.stringify({
                     name: name,
                     price: price,
-                    image: image
+                    image: image,
+                    category:selectCategory
                 })
             })
             nameref.current.value = ""
@@ -56,6 +59,7 @@ function Admin() {
         category()
     },[])
     return <><Navbar />
+    
 
         <div className="admin">
 
@@ -65,9 +69,10 @@ function Admin() {
             <input ref={nameref} type="text" placeholder="name of the product" onChange={e => Setname(e.target.value)} /><br />
             <input ref={imageref} type="text" placeholder="image of the product" onChange={e => SetImage(e.target.value)} /><br />
             <input ref={priceref} type="text" placeholder="price of the product" onChange={e => SetPrice(e.target.value)} /><br />
-            <select name="cars" id="cars">
+            <select value={selectCategory} onChange={e=>SetSelectedCategory(e.target.value)}>
+
                {
-                categories.map(item=> <option value="volvo">{item.name}</option>)
+                categories.map(item=> <option value={item._id}>{item.name}</option>)
                }
             </select><br />
 

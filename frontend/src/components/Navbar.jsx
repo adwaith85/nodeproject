@@ -42,6 +42,7 @@ const {removeToken,token}=AuthStore()
             <Link to={'/cart'} className="nav-link">CART</Link>
             <Link to={'/admin'} className="nav-link">ADMIN</Link>
             <Link to={'/Login'} className="nav-link">LOGIN</Link>
+            <Link to={'/Categories'} className="nav-link">CATEGORY</Link>
            {
               token? <button className="nav-link" style={{textAlign:"left"}} onClick={() => {
              

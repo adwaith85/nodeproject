@@ -6,6 +6,7 @@ import Admin from "./pages/admin";
 import Register from "./pages/register";
 import Login from "./pages/Login";
 import Cart from "./pages/cart";
+import Categories from "./pages/Categories";
 
 function CustomRoute() {
 
@@ -20,6 +21,7 @@ function CustomRoute() {
                 <Route path="/Login" element={<Login/>}/>
                 <Route path="/register" element={<Register/>}/>
                 <Route path="/cart" element={<Cart/>}/>
+                <Route path="/Categories" element={<Categories/>}/>
             </Routes>
 
 
