@@ -21,7 +21,7 @@ function Register() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data), 
+          body: JSON.stringify(data),
         });
 
         reset();
@@ -64,9 +64,10 @@ function Register() {
         <input
           type="password"
           placeholder="password"
-          {...register("password", { required: "Password is required",
-           minLength: { value: 6, message: "Password must be at least 6 characters" }
-        })}
+          {...register("password", {
+            required: "Password is required",
+            minLength: { value: 6, message: "Password must be at least 6 characters" }
+          })}
         />
         {errors.password && <p>{errors.password.message}</p>}
         <br />

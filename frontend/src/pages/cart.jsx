@@ -3,8 +3,8 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import ListGroup from "react-bootstrap/ListGroup"; 
-import Button from "react-bootstrap/Button"; 
+import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
 import CartStore from "../store";
 import { Link } from "react-router-dom";
 import Header from "../components/Navbar";
@@ -15,15 +15,15 @@ function Cart() {
 
   useEffect(() => {
     if (cart.length === 0) {
-      console.log("Your cart is empty!"); 
+      console.log("Your cart is empty!");
       // optional: alert("Your cart is empty!");
     }
   }, [cart]);
 
   return (
     <>
-      
-      <Header/>
+
+      <Header />
       <center><h2>Your Cart</h2></center>
       <Container>
         <Row>

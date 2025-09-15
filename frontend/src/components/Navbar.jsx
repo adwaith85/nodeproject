@@ -13,7 +13,7 @@ import AuthStore from "../AuthStore";
 function Header({ SetSearchItem }) {
 
 
-const {removeToken,token}=AuthStore()
+  const { removeToken, token } = AuthStore()
   // const getData=async()=>{
   //     let res=await fetch(`http://localhost:8000/products?search=${searchItem}`)
   //     let data=await res.json()
@@ -30,8 +30,8 @@ const {removeToken,token}=AuthStore()
   return <>
     <Navbar expand="md" className="">
       <Container fluid className="toggle">
-        
-        <Navbar.Toggle aria-controls="navbarScroll"  />
+
+        <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll" >
           <Nav
             className="navcontent"
@@ -43,15 +43,15 @@ const {removeToken,token}=AuthStore()
             <Link to={'/admin'} className="nav-link">ADMIN</Link>
             <Link to={'/Login'} className="nav-link">LOGIN</Link>
             <Link to={'/Categories'} className="nav-link">CATEGORY</Link>
-           {
-              token? <button className="nav-link" style={{textAlign:"left"}} onClick={() => {
-             
+            {
+              token ? <button className="nav-link" style={{ textAlign: "left" }} onClick={() => {
 
-              removeToken()
-        
-            }}>LOGOUT</button>:<></>
-           }
-            
+
+                removeToken()
+
+              }}>LOGOUT</button> : <></>
+            }
+
           </Nav>
           {
             location.pathname === "/admin" ? <></> : <Form className="navsearch">

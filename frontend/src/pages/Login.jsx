@@ -9,7 +9,7 @@ function Login() {
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
-    const {addToken}=AuthStore()
+    const { addToken } = AuthStore()
 
 
     const onClick = async () => {
@@ -34,7 +34,7 @@ function Login() {
         let token = data.token;
 
         if (token) {
-           addToken(token)
+            addToken(token)
             navigate("/")
         } else {
             console.error("Token not found in response.");

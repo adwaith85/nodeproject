@@ -1,115 +1,65 @@
+body {
 
-/* body{
-    background: #e7baba;
-    display: flex;
-    justify-content: center;
+    background: linear-gradient(to right, rgb(134, 107, 107), rgb(153, 123, 76));
+
+
+
 }
-.body{
-    margin-top:  100px;
-    margin-left: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    background: #e7baba;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    justify-items: center;
-    
-   height: auto;
-   width: 100vw;
+
+h2 {
+    text-align: center;
+
 }
-.adminpage{
-    height: 500px;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.admin{
-     border-radius: 20px;
+
+
+.admin {
+    border-radius: 20px;
     padding: 30px;
     box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
     backdrop-filter: blur(10px);
-    background-color: #efd7d7;
+    background-color: rgb(209, 209, 209);
     border: 1px solid rgba(27, 164, 0, 0.18);
     text-align: center;
-    
-    padding-top: 50px;
-    
-    
-}
-
-input{
-    width: 300px;
-    height: 40px;
-    border-radius: 10px;
-    border: none;
-    outline: none;
-    padding-left: 20px;
-    font-size: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 8px 32px rgba(109, 133, 167, 0.37);
-    backdrop-filter: blur(10px);
-}
-
-input::placeholder{
-    color: rgb(192, 164, 164);    
-} */
-body{
-    
-    background: linear-gradient(to right , rgb(134, 107, 107),rgb(153, 123, 76));
-    
-    
-    
-}
-
-
-.admin{
-     border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
-    backdrop-filter: blur(10px);
-    background-color:rgb(209, 209, 209);
-    border: 1px solid rgba(27, 164, 0, 0.18);
-    text-align: center;
-    width:440px;
+    width: 440px;
     justify-content: center;
     justify-items: center;
     margin: auto;
     height: auto;
     margin-top: 90px;
 
-    
-    
+
+
 }
 
-.admin h1:hover{
+.admin h1:hover {
     color: rgb(214, 106, 106);
     transition: cubic-bezier(0.77, 0, 0.175, 1);
     transition-duration: 1s;
 }
-.admin input{
+
+.admin input {
     border-radius: 10px;
-    
+
     margin-top: 10px;
 
 }
-.admin input:hover{
+
+.admin input:hover {
     background-color: rgb(234, 240, 241);
     text-align: center;
 }
 
-.admin button{
+.admin button {
     border-radius: 10px;
-    
+
     margin-top: 10px;
 }
-.admin button:hover{
+
+.admin button:hover {
     background-color: rgb(101, 126, 120);
 }
 
-select{
+select {
     width: 190px;
     margin: 10px;
     border: 2px solid black;
@@ -118,30 +68,31 @@ select{
     height: 26px;
     font-size: 15px;
 }
-option{
+
+option {
     width: 190px;
     border: 2px solid black;
     border-radius: 8px;
 }
 
 
-.navbar{
+.navbar {
     width: 100%;
     height: auto;
     margin: 0 0 20px 0;
     display: flex;
     gap: 2.3rem;
-    
-    justify-content: space-around;
-    position:sticky ;
-    background-color:rgb(209, 209, 209);
-    box-shadow: 0 10px 10px rgba(0,0,0,0.5);
 
-    
+    justify-content: space-around;
+    position: sticky;
+    background-color: rgb(209, 209, 209);
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
+
+
 }
 
-.navcontent:hover{
-    color:aqua ;
+.navcontent:hover {
+    color: aqua;
 }
 
 
@@ -149,64 +100,80 @@ option{
 
 .navsearch {
     align-items: center;
-    justify-content:right;
+    justify-content: right;
     justify-items: flex-end;
-    display:flex;
-    
+    display: flex;
+
     gap: 1.3rem;
     margin-right: 20px;
-    
+
 }
 
-.navsearch input{
+.navsearch input {
     justify-content: right;
     margin-left: 500px;
 }
 
-.toggle input{
+.toggle input {
     margin: 0px;
-    
+
 }
 
 
-.card{
-   
+.category-list {
+    display: inline-block;
+    margin-right: 1rem;
+    padding-bottom: 5px;
+    color: rgb(0, 0, 0);
+    transition: border-bottom 0.2s ease;
+}
+
+.category-list:hover {
+    border-bottom: 3px solid rgb(0, 0, 0);
+    border-radius: 10px;
+}
+
+
+
+.card {
+
     font-family: 'Times New Roman', Times, serif;
     font-size: large;
     border-radius: 20px;
     padding: 30px;
     box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
     backdrop-filter: blur(10px);
-    display: flex;    
+    display: flex;
     overflow: hidden;
     height: 400px;
-    width:300px;
+    width: 300px;
     margin: 50px;
     font-size: larger;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    
-    
+
+
 }
-.card button{
+
+.card button {
     border-radius: 10px;
     font-variant: small-caps;
     font-style: oblique;
 }
 
-.card button:hover{
+.card button:hover {
     background-color: rgb(84, 95, 56);
     border-radius: 30px;
 }
 
-.reg-card{
-     border-radius: 20px;
+.reg-card {
+    border-radius: 20px;
     padding: 30px;
     box-shadow: 0 10px 39px rgba(0, 12, 29, 0.37);
     backdrop-filter: blur(10px);
     background-color: rgb(209, 209, 209);
     border: 1px solid rgba(27, 164, 0, 0.18);
     text-align: center;
-    width:fit-content;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
@@ -218,81 +185,29 @@ option{
 
 }
 
-.reg-card input{
+.reg-card input {
     border-radius: 10px;
     margin: 10px;
     text-align: center;
-    
+
     background-color: #bbb6b6;
 }
-.reg-card button:hover{
-        border-radius: 20px;
-        background-color: #bbb6b6;
+
+.reg-card button:hover {
+    border-radius: 20px;
+    background-color: #bbb6b6;
 }
 
-.reg-card a{
+.reg-card a {
     text-decoration: none;
     color: rgb(0, 9, 174);
     font-size: larger;
-    transition:  0.1s ease;
+    transition: 0.1s ease;
 }
-.reg-card a:hover{
+
+.reg-card a:hover {
     font-size: large;
     background: rgb(181, 179, 179);
     border-radius: 5px;
     transform: scale(1.5);
 }
-
-
-/* .card{
-   
-    font-family: 'Times New Roman', Times, serif;
-    font-size: large;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
-    backdrop-filter: blur(10px);
-    display: flex;    
-    overflow: hidden;
-    height: 400px;
-}
-
-@media (max-width: 1000px) {
-    .body{
-        flex-direction: column;
-        align-items: center;
-        height: auto;
-        width: 100vw;
-    }
-    .card{
-        margin-bottom: 20px;
-        height: auto;
-        width: 90vw;
-    }
-    .admin{
-        width: auto;
-        height: auto;
-        margin-bottom: 20px;
-        margin-top: 290px;
-    }
-}
-
-.reg-card{
-     border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 8px 32px rgba(11, 62, 132, 0.37);
-    backdrop-filter: blur(10px);
-    background-color: white;
-    border: 1px solid rgba(27, 164, 0, 0.18);
-    text-align: center;
-    width:fit-content;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-
-    margin-top: 100px;
-    padding-top: 50px;
-
-} */

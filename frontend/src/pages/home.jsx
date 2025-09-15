@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import Header from "../components/Navbar"
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -16,16 +17,16 @@ function Home() {
 
     const [data, SetData] = useState([])
     const [cart, setCart] = useState()
-    
-    const [categorylist,setCategorylist]=useState([])
+
+    const [categorylist, setCategorylist] = useState([])
     const [searchItem, SetSearchItem] = useState("")
 
     const navigate = useNavigate()
-    const {token}=AuthStore()
+    const { token } = AuthStore()
 
 
     const getData = async () => {
-         // Or wherever you stored the JWT
+        // Or wherever you stored the JWT
 
         let res = await fetch(`http://localhost:8000/products?search=${searchItem}`, {
             method: "GET",
@@ -53,7 +54,7 @@ function Home() {
         setCart((prev) => [...prev, item])
     }
 
-     useEffect(() => {
+    useEffect(() => {
         getData()
 
     }, [searchItem])
@@ -61,21 +62,21 @@ function Home() {
 
 
 
-    const getCategory=async()=>{
-        let res =await fetch("http://localhost:8000/category",{
-            method:"GET",
-            headers:{
-                "Content-Type":"application/json"
+    const getCategory = async () => {
+        let res = await fetch("http://localhost:8000/category", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
             },
-            
+
         })
-        let data=await res.json()
+        let data = await res.json()
         setCategorylist(data)
     }
-   
-    useEffect(()=>{
+
+    useEffect(() => {
         getCategory()
-    },[])
+    }, [])
 
     // const deleteItem = async (id) => {
     //     await fetch(`http://localhost:8000/products/${id}`, {
@@ -90,34 +91,38 @@ function Home() {
     return <>
 
         <Header SetSearchItem={SetSearchItem} />
-       <h2>
+        <h2>
+            {
+                categorylist.map(item => <>
+                    <Link to={`/Categories/${item.name}`} className="category-list">{item.name}</Link>
+                    {/* <div className="category-list">{item.name}</div> */}
+                </>)
+
+            }
+        </h2>
+
+
+
         {
-            categorylist.map(item=><div>{item.name}</div>)
+            token ?
+
+                <Container fluid>
+                    <Row >
+                        {data.map(item => (
+                            <Col key={item.id} >
+                                <Detail
+                                    additem={additem}
+                                    image={item.image}
+                                    name={item.name}
+                                    price={item.price}
+                                    id={item._id}
+                                    category={item?.category ?? ""}
+                                />
+                            </Col>
+                        ))}
+                    </Row>
+                </Container> : <Navigate to={"/login"} />
         }
-       </h2>
-
-            
-
-{
-    token?
-        
-        <Container fluid>
-            <Row >
-                {data.map(item => (
-                    <Col key={item.id} >
-                        <Detail
-                            additem={additem}
-                            image={item.image}
-                            name={item.name}
-                            price={item.price}
-                        id={item._id}
-                        category={item?.category??""}
-                        />
-                    </Col>
-                ))}
-            </Row>
-        </Container>:<Navigate to={"/login"}/>
-}
 
 
     </>
@@ -128,14 +133,14 @@ import CartStore from "../store";
 
 function Detail(props) {
 
-    const {add}=CartStore()
+    const { add } = CartStore()
 
     const item = {
         id: props.id,
         image: props.image,
         name: props.name,
         price: props.price,
-        category:props.category
+        category: props.category
     };
 
     return (
@@ -146,9 +151,9 @@ function Detail(props) {
                 <ListGroup.Item>{item.name}</ListGroup.Item>
                 <ListGroup.Item>{item.price}</ListGroup.Item>
                 <ListGroup.Item>
-                     {item?.category?.name ?? "no category"}
-                    </ListGroup.Item>
-                <button onClick={() =>{
+                    {item?.category?.name ?? "no category"}
+                </ListGroup.Item>
+                <button onClick={() => {
                     console.log(item)
                     add(item)
                 }}>ADD TO CART</button>
@@ -156,7 +161,7 @@ function Detail(props) {
 
             </ListGroup>
         </Card>
-        
+
 
     );
 }
