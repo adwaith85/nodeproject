@@ -227,10 +227,29 @@ img{
     transform: scale(1.5);
 }
 
-.cart{
-    width: auto;
-    margin: 20px;
-    margin-top: 50px;
+.cart-details{
+    margin-top: 80px;
     
+}
+.container{
+    display: flex;
+    gap: 6px;
+}
+
+.cart{
+    height: auto;
+    width: 100%;
+    margin: 0px;
+    transition: 0.7sec;
+}
+.cart:hover{
+    transform: scale(1.2);
+}
+
+.cartimage{
+     width: 100%;
+    
+}
+.cart-text{
     
 }

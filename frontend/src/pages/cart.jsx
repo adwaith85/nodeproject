@@ -28,24 +28,33 @@ function Cart() {
 
       <Header />
      {
-      token?<>
+      token?<div className="cart-details">
             <center><h2>Your Cart</h2></center>
       <Container >
         <Row>
           {cart.map((item) => (
             <Col key={item.id}>
               <Card className="cart">
-                <Card.Body>
-                  <ListGroup variant="flush">
+                <Card.Body >
+                  <ListGroup   variant="flush">
+                    <div className="container">
+                        <div className="cartimage">
+                    
                     <ListGroup.Item>
                       <img
-                        style={{ width: "13rem", height: "10rem",borderRadius:"9px",borderColor:"black",border:"1px solid" }}
+                        style={{ width: "10rem", height: "10rem",borderRadius:"9px",borderColor:"black",border:"1px solid" }}
                         src={item.image}
                         alt={item.name}
                       />
                     </ListGroup.Item>
-                    <ListGroup.Item>{item.name}</ListGroup.Item>
+                  </div>
+                    <div className="cart-text">
+                      <ListGroup.Item>{item.name}</ListGroup.Item>
                     <ListGroup.Item>₹{item.price}</ListGroup.Item>
+                    </div>
+
+                    </div>
+                  
                   </ListGroup>
                   <Button
                     variant="danger"
@@ -60,7 +69,7 @@ function Cart() {
             </Col>
           ))}
         </Row>
-      </Container></>:<>
+      </Container></div>:<>
       
       <h1>not logind</h1>
       <h1>not logind</h1>
