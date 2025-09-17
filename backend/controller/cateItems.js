@@ -8,7 +8,7 @@ export const cateItem = async (req, res) => {
         console.log(name)
         const category = await Category.findOne({ name });
 
-        const products = await ProductModel.find({ category: category._id })
+        const products = await ProductModel.find({ category: category._id }).populate("category").exec()
         res.json(products)
 
     } catch (err) {

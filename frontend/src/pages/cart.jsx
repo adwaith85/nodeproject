@@ -8,9 +8,11 @@ import Button from "react-bootstrap/Button";
 import CartStore from "../store";
 import { Link } from "react-router-dom";
 import Header from "../components/Navbar";
+import AuthStore from "../AuthStore";
 
 function Cart() {
   const { cart, remove } = CartStore();
+  const {token}=AuthStore()
   console.log(cart)
 
   useEffect(() => {
@@ -20,21 +22,24 @@ function Cart() {
     }
   }, [cart]);
 
+
   return (
     <>
 
       <Header />
-      <center><h2>Your Cart</h2></center>
-      <Container>
+     {
+      token?<>
+            <center><h2>Your Cart</h2></center>
+      <Container >
         <Row>
           {cart.map((item) => (
             <Col key={item.id}>
-              <Card style={{ width: "18rem", margin: "20px" }}>
+              <Card className="cart">
                 <Card.Body>
                   <ListGroup variant="flush">
                     <ListGroup.Item>
                       <img
-                        style={{ width: "13rem", height: "10rem" }}
+                        style={{ width: "13rem", height: "10rem",borderRadius:"9px",borderColor:"black",border:"1px solid" }}
                         src={item.image}
                         alt={item.name}
                       />
@@ -49,12 +54,33 @@ function Cart() {
                   >
                     Remove
                   </Button>
+                  
                 </Card.Body>
               </Card>
             </Col>
           ))}
         </Row>
-      </Container>
+      </Container></>:<>
+      
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      <h1>not logind</h1>
+      </>
+     }
     </>
   );
 }

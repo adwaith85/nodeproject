@@ -7,6 +7,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from "react";
+import NavLink from "./NavLink";
 
 import AuthStore from "../AuthStore";
 
@@ -26,7 +27,7 @@ function Header({ SetSearchItem }) {
   const location = useLocation()
 
   console.log("location", location.pathname)
-
+  
   return <>
     <Navbar expand="md" className="">
       <Container fluid className="toggle">
@@ -53,8 +54,10 @@ function Header({ SetSearchItem }) {
             }
 
           </Nav>
-          {
-            location.pathname === "/admin" ? <></> : <Form className="navsearch">
+          <NavLink showOn={[
+            "/",
+          ]}>
+            <Form className="navsearch">
               <Form.Control
                 onChange={(e) => SetSearchItem(e.target.value)}
                 type="search"
@@ -64,7 +67,7 @@ function Header({ SetSearchItem }) {
               />
               <Button variant="outline-success">Search</Button>
             </Form>
-          }
+          </NavLink>
         </Navbar.Collapse>
       </Container>
     </Navbar>

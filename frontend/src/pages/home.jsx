@@ -91,12 +91,13 @@ function Home() {
     return <>
 
         <Header SetSearchItem={SetSearchItem} />
-        <h2>
+        <h2 className="category-list">
             {
-                categorylist.map(item => <>
-                    <Link to={`/Categories/${item.name}`} className="category-list">{item.name}</Link>
+                categorylist.map(item => <div className="cate-menu">
+                <img src={item.image} alt="" />
+                    <Link to={`/Categories/${item.name}`} className="cate-link" >{item.name}</Link>
                     {/* <div className="category-list">{item.name}</div> */}
-                </>)
+                </div>)
 
             }
         </h2>

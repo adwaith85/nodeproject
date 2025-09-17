@@ -84,7 +84,9 @@ option {
     gap: 2.3rem;
 
     justify-content: space-around;
-    position: sticky;
+    position: fixed;
+    top: 0;
+    z-index: 999;
     background-color: rgb(209, 209, 209);
     box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5);
 
@@ -121,7 +123,9 @@ option {
 
 
 .category-list {
-    display: inline-block;
+    display: flex;
+    gap: 25px;
+    margin-top: 12vh;
     margin-right: 1rem;
     padding-bottom: 5px;
     color: rgb(0, 0, 0);
@@ -133,7 +137,18 @@ option {
     border-radius: 10px;
 }
 
+.cate-menu{
+    display: flex;
+    flex-direction: column;
+}
 
+
+img{
+    width: 50px;
+    justify-content:center;
+    margin: auto;
+    
+}
 
 .card {
 
@@ -210,4 +225,12 @@ option {
     background: rgb(181, 179, 179);
     border-radius: 5px;
     transform: scale(1.5);
+}
+
+.cart{
+    width: auto;
+    margin: 20px;
+    margin-top: 50px;
+    
+    
 }
