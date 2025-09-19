@@ -93,8 +93,12 @@ option {
 
 }
 .navbar button{
-    color:aqua;
+    color:rgb(83, 83, 83);
     
+}
+.navbar button:hover{
+    color:black;
+    font-size: large;
 }
 
 .navcontent:hover {

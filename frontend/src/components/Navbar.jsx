@@ -44,15 +44,9 @@ function Header({ SetSearchItem }) {
             <Link to={'/admin'} className="nav-link">ADMIN</Link>
             <Link to={'/Login'} className="nav-link">LOGIN</Link>
             <Link to={'/Categories'} className="nav-link">CATEGORY</Link>
-            {
-              token ? <button className="nav-link" style={{ textAlign: "left" }} onClick={() => {
+        
 
-
-                removeToken()
-
-              }}>LOGOUT</button> : <></>
-            }
-
+        
           </Nav>
           <NavLink showOn={[
             "/",
@@ -65,10 +59,26 @@ function Header({ SetSearchItem }) {
                 className=""
                 aria-label="Search"
               />
-              <Button variant="outline-success">Search</Button>
+              <Button variant="outline-success" style={{margin:"auto"}}>Search</Button>
             </Form>
           </NavLink>
         </Navbar.Collapse>
+
+
+          <Navbar.Collapse className="justify-content-end">
+          <Navbar.Text>
+               {
+              token ? <button className="nav-link" style={{ textAlign: "left" }} onClick={() => {
+
+
+                removeToken()
+                alert("loged out")
+              }}>LOGOUT</button> : <></>
+            }
+          </Navbar.Text>
+        </Navbar.Collapse>
+
+
       </Container>
     </Navbar>
 

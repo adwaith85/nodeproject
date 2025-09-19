@@ -25,11 +25,10 @@ function Cart() {
   }, [cart]);
 
 
-  return <>
-
-
+  return <><Header />
     {
-      token ? <><Header />
+      token ? <>
+      
 
         <div className="cart-details">
           <center><h2>Your Cart</h2></center>
@@ -84,11 +83,12 @@ function Cart() {
                 </Col>
               ))}
             </Row>
-          </Container></div>  : <Navigate to={"/login"} />
-          </>
-     }
-  </>
-
+          </Container></div>
+      
+      
+      </>  : <Navigate to={"/login"} />
     }
+  </>
+}
 
 export default Cart;
