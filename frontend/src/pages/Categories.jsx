@@ -1,5 +1,7 @@
 import { useRef, useState } from "react"
 import Navbar from "../components/Navbar"
+import AuthStore from "../AuthStore"
+import { Navigate, useNavigate } from "react-router-dom";
 function Categories() {
 
     const nameref = useRef()
@@ -8,7 +10,9 @@ function Categories() {
     const [name, Setname] = useState("")
     const [image, SetImage] = useState("")
     const [loading, Setloading] = useState(false)
-
+     
+    const {token}=AuthStore()
+  console.log(token)
 
     const Uplodad = async () => {
         Setloading(true)
@@ -32,6 +36,9 @@ function Categories() {
 
     }
     return <><Navbar />
+    {
+        token? 
+        
         <div className="admin">
 
             <h2>ADD CATEGORY</h2>
@@ -41,7 +48,8 @@ function Categories() {
                 loading ? <h4>Working on it..</h4> : <button onClick={Uplodad}>SUBMIT</button>
             }
 
-        </div>
+        </div>  : <Navigate to={"/login"} />
+    }
     </>
 }
 

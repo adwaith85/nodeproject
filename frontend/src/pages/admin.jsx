@@ -1,6 +1,8 @@
 import { useState } from "react"
 import Navbar from "../components/Navbar"
 import { useRef, useEffect } from "react"
+import AuthStore from "../AuthStore"
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 function Admin() {
@@ -8,7 +10,9 @@ function Admin() {
     const nameref = useRef()
     const imageref = useRef()
     const priceref = useRef()
-
+     
+    const {token}=AuthStore()
+  console.log(token)
 
     const [name, Setname] = useState("")
     const [image, SetImage] = useState("")
@@ -59,9 +63,8 @@ function Admin() {
         category()
     }, [])
     return <><Navbar />
-
-
-        <div className="admin">
+        { 
+        token ?<div className="admin">
 
             <h1>ADD NEW PROUDUCT</h1>
 
@@ -81,7 +84,8 @@ function Admin() {
             }
 
             {/* </div> */}
-        </div>
+        </div>  : <Navigate to={"/login"} />
+        }            
 
     </>
 }

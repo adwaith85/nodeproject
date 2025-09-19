@@ -3,26 +3,56 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 
 const CartStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       cart: [],
-      add: (item) =>
+
+      add: (newItem) =>
+        set((state) => {
+          const existingItem = state.cart.find((item) => item.id === newItem.id);
+
+          if (existingItem) {
+            return {
+              cart: state.cart.map((item) =>
+                item.id === newItem.id
+                  ? { ...item, quantity: item.quantity + 1 }
+                  : item
+              ),
+            };
+          }
+
+          return {
+            cart: [...state.cart, { ...newItem, quantity: 1 }],
+          };
+        }),
+
+      decrease: (id) =>
         set((state) => ({
-          cart: [...state.cart, item],
+          cart: state.cart
+            .map((item) =>
+              item.id === id ? { ...item, quantity: item.quantity - 1 } : item
+            )
+            .filter((item) => item.quantity > 0),
         })),
+
       remove: (id) =>
         set((state) => ({
           cart: state.cart.filter((item) => item.id !== id),
         })),
+
       clear: () => set({ cart: [] }),
+
+      getTotal: () => {
+        return get().cart.reduce(
+          (total, item) => total + item.price * item.quantity,
+          0
+        );
+      },
     }),
     {
-      name: "cart-storage", // key name in storage
-      storage: createJSONStorage(() => localStorage), // defaults to localStorage
+      name: "cart-storage",
+      storage: createJSONStorage(() => localStorage),
     }
   )
-)
+);
 
-
-
-
-export default CartStore
+export default CartStore;

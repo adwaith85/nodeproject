@@ -36,7 +36,7 @@ function Home() {
         });
         if (!res.ok) {
             navigate("/login")
-            return alert(
+            return(
                 " not logined")
 
 

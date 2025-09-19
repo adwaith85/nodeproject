@@ -92,6 +92,10 @@ option {
 
 
 }
+.navbar button{
+    color:aqua;
+    
+}
 
 .navcontent:hover {
     color: aqua;
@@ -229,27 +233,53 @@ img{
 
 .cart-details{
     margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+   
     
 }
 .container{
     display: flex;
     gap: 6px;
+    width: auto;
+    
+    
 }
 
 .cart{
-    height: auto;
+    height: 80%;
     width: 100%;
-    margin: 0px;
+    margin: auto;
+    margin-top: 30px;
     transition: 0.7sec;
+    margin-left: -20px;
 }
 .cart:hover{
-    transform: scale(1.2);
+    transform: scale(1.05);
 }
 
 .cartimage{
      width: 100%;
+        height: 10px;
+     margin-top: -2px;
+        margin-left: -20px;
     
 }
 .cart-text{
+     margin-right: 60px;
+     
+}
+.btn{
+    height: 50px;
+    margin-top: 50px;
+    margin-top: 30px;
+       
+    
+    
+}
+.cart-details input{
+    width: 30px;
+    text-align: center;
+    border-radius: 15px;
     
 }
