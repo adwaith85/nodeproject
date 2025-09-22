@@ -15,7 +15,7 @@ function Cart() {
   const { cart, remove, add, decrease, getTotal } = CartStore();
   const { token } = AuthStore()
   console.log(cart)
-  const [quantity, setQuantity] = useState(1)
+  
 
   useEffect(() => {
     if (cart.length === 0) {
@@ -32,9 +32,7 @@ function Cart() {
 
         <div className="cart-details">
           <center><h2>Your Cart</h2></center>
-          <div style={{ marginTop: "20px", textAlign: "right" }}>
-            <h2>Total Amount = ₹{getTotal()}</h2>
-          </div>
+          
           <Container >
             <Row className="flex-column">
               {cart.map((item) => (
@@ -84,7 +82,18 @@ function Cart() {
               ))}
             </Row>
           </Container></div>
-      
+ 
+    <footer className="footer">
+      <div className="footer-content">
+        <div className="footer-links">
+         <h2>Total Amount = ₹{getTotal()}</h2>
+         <Link to={'/checkout'} className="check">Place order</Link>
+        </div>
+      </div>
+    </footer>
+  
+
+
       
       </>  : <Navigate to={"/login"} />
     }

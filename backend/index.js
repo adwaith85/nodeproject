@@ -10,6 +10,8 @@ import ProductRoute from "./route/product.js"
 import AuthROute from "./route/auth.js"
 import cateItemROute from "./route/cateItem.js"
 
+import OrderRouter from "./route/order.js"
+
 dotenv.config()
 const MONGO_URL = process.env.MONGO_URL
 const PORT = process.env.PORT
@@ -29,6 +31,7 @@ app.use(AuthROute)
 app.use(CategoryROute)
 
 app.use(cateItemROute)
+app.use(OrderRouter)
 
 // app.get("/products",item)
 
