@@ -1,4 +1,4 @@
-import Item from "../model/model.js";
+import Product from "../model/productmodel.js";
 import Order from "../model/order.js";
 import Usermodel from "../model/userModel.js";
 
@@ -19,7 +19,7 @@ export const CreateOrder=async(req,res)=>{
         let totalprice=0;
 
         for (const item of orderItems){
-            const product=await Item.findOne({_id:item.pid});
+            const product=await Product.findOne({_id:item.pid});
             totalprice+=item.qty*product.price;
 
         }

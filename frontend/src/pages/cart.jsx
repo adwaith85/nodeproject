@@ -54,7 +54,8 @@ function Cart() {
                           <div className="cart-text">
                             <ListGroup.Item>{item.name}</ListGroup.Item>
                             <ListGroup.Item>₹{item.price}</ListGroup.Item>
-                            <button onClick={() => decrease(item.id)}>-</button>
+                           <div className="quantity-control">
+                             <button onClick={() => decrease(item.id)}>-</button>
                             <input
                               type="text"
                               value={item.quantity}
@@ -62,6 +63,7 @@ function Cart() {
                             // style={{ width: "40px", textAlign: "center" }}
                             />
                             <button onClick={() => add(item)}>+</button>
+                           </div>
                           </div>
 
 

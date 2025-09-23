@@ -29,7 +29,7 @@ function Header({ SetSearchItem }) {
   console.log("location", location.pathname)
   
   return <>
-    <Navbar expand="md" className="">
+    <Navbar expand="md" className="bg-primary" variant="dark">
       <Container fluid className="toggle">
 
         <Navbar.Toggle aria-controls="navbarScroll" />
@@ -72,7 +72,7 @@ function Header({ SetSearchItem }) {
 
 
                 removeToken()
-                alert("loged out")
+                // alert("loged out")
               }}>LOGOUT</button> : <></>
             }
           </Navbar.Text>

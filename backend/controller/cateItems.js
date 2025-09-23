@@ -1,6 +1,6 @@
 import Category from "../model/cateModel.js"
 
-import ProductModel from "../model/model.js"
+import Product from "../model/productmodel.js"
 
 export const cateItem = async (req, res) => {
     try {
@@ -8,7 +8,7 @@ export const cateItem = async (req, res) => {
         console.log(name)
         const category = await Category.findOne({ name });
 
-        const products = await ProductModel.find({ category: category._id }).populate("category").exec()
+        const products = await Product.find({ category: category._id }).populate("category").exec()
         res.json(products)
 
     } catch (err) {

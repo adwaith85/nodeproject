@@ -1,5 +1,5 @@
 
-import Item from "../model/model.js"
+import Product from "../model/productmodel.js"
 
 
 export const item = async (req, res) => {
@@ -7,7 +7,7 @@ export const item = async (req, res) => {
     const item = req.query.search;
 
     if (item != "") {
-        const pro = await Item.findOne({ name: item })
+        const pro = await Product.findOne({ name: item })
         if (pro) {
             return res.json(new Array(pro))
         } else {
@@ -18,7 +18,7 @@ export const item = async (req, res) => {
 
     console.log("get request", item)
 
-    const items = await Item.find({}).populate("category").exec()
+    const items = await Product.find({}).populate("category").exec()
 
     res.json(items)
 
@@ -26,9 +26,9 @@ export const item = async (req, res) => {
 
 export const itemadd = (req, res) => {
     const { name, image, price, category } = req.body
-    console.log(name, image, price)
+    // console.log(name, image, price)
 
-    Item.create({ name, image, price, category })
+    Product.create({ name, image, price, category })
 
     res.send("ok created")
 
@@ -39,7 +39,7 @@ export const deleteitem = async (req, res) => {
         const { id } = req.params
         console.log(id)
 
-        await Item.findByIdAndDelete(id)
+        await Product.findByIdAndDelete(id)
 
     } catch (err) {
         console.log(err)

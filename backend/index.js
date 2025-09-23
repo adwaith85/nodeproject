@@ -3,7 +3,7 @@ import dotenv from "dotenv"
 import express from "express"
 import cors from "cors"
 import mongoose from "mongoose"
-import Item from "./model/model.js"
+import Product from "./model/productmodel.js"
 
 import CategoryROute from "./route/category.js"
 import ProductRoute from "./route/product.js"

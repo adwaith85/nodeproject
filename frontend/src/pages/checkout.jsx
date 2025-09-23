@@ -27,12 +27,40 @@ function Checkout() {
 
 
     const Upload=async(data)=>{
+        try{
         let res =await fetch("http://localhost:8000/order",{
-            
-        })
+            method:"POST",
+            headers:{
+                "content-type":"application/JSON",
+                Authorization:`Bearer ${token}`,
 
-        console.log(data)
+            },
+            body:JSON.stringify({
+                name:data.name,
+                address:data.address,
+                district:data.district,
+                pincode:data.pincode,
+                number:data.number,
+                orderItem:cart.map(item=>({
+                    pid:item.id,
+                    qty:item.quantity
+                })),
+
+            }),
+        });
+        if(res.ok){
+            clearCart();
+            alert("order placed successfully!");
+
+        }else{
+            alert("failed to order");
+
+        }
+    } catch (err){
+        console.error(err)
+        alert("an error occurred");
     }
+};
 
 
     return <>

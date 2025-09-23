@@ -36,7 +36,7 @@ function Home() {
         });
         if (!res.ok) {
             navigate("/login")
-            return(
+            return (
                 " not logined")
 
 
@@ -91,17 +91,31 @@ function Home() {
     return <>
 
         <Header SetSearchItem={SetSearchItem} />
-        <h2 className="category-list">
+
+       <section className="flipkart-category-strip">
+  {categorylist.map((item, index) => (
+    <div className="category-tile" key={index}>
+      {item.image && (
+        <img src={item.image} alt={item.name} className="category-icon" />
+      )}
+      <Link to={`/Categories/${item.name}`} className="category-label">
+        {item.name}
+      </Link>
+    </div>
+  ))}
+</section>
+
+
+        {/* <h2 className="category-list">
             {
                 categorylist.map(item => <div className="cate-menu">
-                <img src={item.image} alt="" />
+                <img src={item.image} alt=".." />
                     <Link to={`/Categories/${item.name}`} className="cate-link" >{item.name}</Link>
-                    {/* <div className="category-list">{item.name}</div> */}
+                    
                 </div>)
 
             }
-        </h2>
-
+        </h2> */}
 
 
         {
