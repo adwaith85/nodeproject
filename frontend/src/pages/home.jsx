@@ -18,7 +18,7 @@ function Home() {
     const [data, SetData] = useState([])
     const [cart, setCart] = useState()
 
-    const [categorylist, setCategorylist] = useState([])
+    
     const [searchItem, SetSearchItem] = useState("")
 
     const navigate = useNavigate()
@@ -62,22 +62,7 @@ function Home() {
 
 
 
-    const getCategory = async () => {
-        let res = await fetch("http://localhost:8000/category", {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json"
-            },
-
-        })
-        let data = await res.json()
-        setCategorylist(data)
-    }
-
-    useEffect(() => {
-        getCategory()
-    }, [])
-
+   
     // const deleteItem = async (id) => {
     //     await fetch(`http://localhost:8000/products/${id}`, {
     //         method: "DELETE"
@@ -91,19 +76,8 @@ function Home() {
     return <>
 
         <Header SetSearchItem={SetSearchItem} />
-
-       <section className="flipkart-category-strip">
-  {categorylist.map((item, index) => (
-    <div className="category-tile" key={index}>
-      {item.image && (
-        <img src={item.image} alt={item.name} className="category-icon" />
-      )}
-      <Link to={`/Categories/${item.name}`} className="category-label">
-        {item.name}
-      </Link>
-    </div>
-  ))}
-</section>
+        <CateOption/>
+      
 
 
         {/* <h2 className="category-list">
@@ -180,5 +154,46 @@ function Detail(props) {
 
     );
 }
+
+export {Detail}
+
+function CateOption(){
+    const [categorylist, setCategorylist] = useState([])
+
+     const getCategory = async () => {
+        let res = await fetch("http://localhost:8000/category", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+        })
+        let data = await res.json()
+        setCategorylist(data)
+    }
+
+    useEffect(() => {
+        getCategory()
+    }, [])
+
+    return<>
+     <section className="flipkart-category-strip">
+  {categorylist.map((item, index) => (
+   
+      <Link to={`/Categories/${item.name}`} className="category-label">
+         <div className="category-tile" key={index}>
+      {item.image && (
+        <img src={item.image} alt={item.name} className="category-icon" />
+      )}
+        {item.name}
+        </div>
+      </Link>
+    
+  ))}
+</section>
+    </>
+}
+
+export {CateOption}
 
 export default Home

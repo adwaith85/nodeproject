@@ -2,9 +2,14 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import CartStore from "../store";
 import { useForm } from "react-hook-form";
+import AuthStore from "../AuthStore";
 
 function Checkout() {
-    const { cart, getTotal } = CartStore();
+const {token}=AuthStore()
+  console.log(token)
+
+
+    const { cart, getTotal,clear } = CartStore();
 
     const {
         register,
@@ -41,7 +46,7 @@ function Checkout() {
                 district:data.district,
                 pincode:data.pincode,
                 number:data.number,
-                orderItem:cart.map(item=>({
+                orderItems:cart.map(item=>({
                     pid:item.id,
                     qty:item.quantity
                 })),
@@ -49,7 +54,7 @@ function Checkout() {
             }),
         });
         if(res.ok){
-            clearCart();
+            reset;
             alert("order placed successfully!");
 
         }else{

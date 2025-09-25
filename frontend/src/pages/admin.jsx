@@ -10,9 +10,9 @@ function Admin() {
     const nameref = useRef()
     const imageref = useRef()
     const priceref = useRef()
-     
-    const {token}=AuthStore()
-  console.log(token)
+
+    const { token } = AuthStore()
+    console.log(token)
 
     const [name, Setname] = useState("")
     const [image, SetImage] = useState("")
@@ -63,29 +63,31 @@ function Admin() {
         category()
     }, [])
     return <><Navbar />
-        { 
-        token ?<div className="admin">
+        {
+            token ? <div className="admin">
 
-            <h1>ADD NEW PROUDUCT</h1>
+                <h1>ADD NEW PROUDUCT</h1>
 
 
-            <input ref={nameref} type="text" placeholder="name of the product" onChange={e => Setname(e.target.value)} /><br />
-            <input ref={imageref} type="text" placeholder="image of the product" onChange={e => SetImage(e.target.value)} /><br />
-            <input ref={priceref} type="text" placeholder="price of the product" onChange={e => SetPrice(e.target.value)} /><br />
-            <select value={selectCategory} onChange={e => SetSelectedCategory(e.target.value)}>
+                <input ref={nameref} type="text" placeholder="name of the product" onChange={e => Setname(e.target.value)} /><br />
+                <input ref={imageref} type="text" placeholder="image of the product" onChange={e => SetImage(e.target.value)} /><br />
+                <input ref={priceref} type="text" placeholder="price of the product" onChange={e => SetPrice(e.target.value)} /><br />
+                <select value={selectCategory} onChange={e => SetSelectedCategory(e.target.value)}>
+
+                    {
+                        categories.map(item => <option value={item._id}>{item.name}</option>)
+                    }
+                </select><br />
 
                 {
-                    categories.map(item => <option value={item._id}>{item.name}</option>)
+                    loading ? <h4>Loading...</h4> : <button onClick={Uplodad}>SUBMIT</button>
                 }
-            </select><br />
 
-            {
-                loading ? <h4>Loading...</h4> : <button onClick={Uplodad}>SUBMIT</button>
-            }
+                {/* </div> */}
+            </div> : <Navigate to={"/login"} />
+        }
 
-            {/* </div> */}
-        </div>  : <Navigate to={"/login"} />
-        }            
+       
 
     </>
 }

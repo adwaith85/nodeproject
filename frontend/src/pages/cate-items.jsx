@@ -5,6 +5,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Header from "../components/Navbar";
+import { CateOption } from "./home";
 
 function DisplayCategory() {
 
@@ -23,9 +25,11 @@ function DisplayCategory() {
 
     useEffect(() => {
         getcateItems()
-    }, [])
+    }, [{name}])
 
     return <>
+    <Header/>
+    <CateOption/>
 
         <h2>{name}</h2>
         {
