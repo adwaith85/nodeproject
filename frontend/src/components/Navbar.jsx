@@ -12,7 +12,7 @@ import NavLink from "./NavLink";
 import AuthStore from "../AuthStore";
 
 function Header({ SetSearchItem }) {
-
+    
 
   const { removeToken, token } = AuthStore()
   // const getData=async()=>{
@@ -42,7 +42,7 @@ function Header({ SetSearchItem }) {
             <Link to={'/'} className="nav-link">HOME</Link>
             <Link to={'/cart'} className="nav-link">CART</Link>
             <Link to={'/admin'} className="nav-link">ADMIN</Link>
-            <Link to={'/Login'} className="nav-link">LOGIN</Link>
+            
             <Link to={'/Categories'} className="nav-link">CATEGORY</Link>
         
 
@@ -67,13 +67,14 @@ function Header({ SetSearchItem }) {
 
           <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-               {
-              token ? <button className="nav-link" style={{ textAlign: "left" }} onClick={() => {
+              {!token?(
+              <Link to={'/Login'} className="nav-link">LOGIN</Link>
+            ):<button className="nav-link ad" onClick={() => {
 
 
                 removeToken()
                 // alert("loged out")
-              }}>LOGOUT</button> : <></>
+              }}>LOGOUT</button> 
             }
           </Navbar.Text>
         </Navbar.Collapse>

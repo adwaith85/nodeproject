@@ -2,6 +2,7 @@ import { useState } from "react"
 import Navbar from "../components/Navbar"
 import { useRef, useEffect } from "react"
 import AuthStore from "../AuthStore"
+import { Link } from "react-router-dom"
 import { Navigate, useNavigate } from "react-router-dom";
 
 
@@ -63,6 +64,8 @@ function Admin() {
         category()
     }, [])
     return <><Navbar />
+
+        <h2><Link to={'/Order'} className="btn">view orders</Link></h2>
         {
             token ? <div className="admin">
 

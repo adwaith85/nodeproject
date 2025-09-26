@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt"
 
 const UserSchema = new mongoose.Schema({
+  role:{
+    type:String,
+    enum:["admin","user"],
+    default:"user"
+  },
   name: String,
   email: String,
   number: String,

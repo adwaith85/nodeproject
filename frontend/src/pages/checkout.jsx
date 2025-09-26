@@ -52,9 +52,11 @@ const {token}=AuthStore()
                 })),
 
             }),
+
         });
         if(res.ok){
             reset;
+            clear()
             alert("order placed successfully!");
 
         }else{

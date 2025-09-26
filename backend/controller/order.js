@@ -2,6 +2,13 @@ import Product from "../model/productmodel.js";
 import Order from "../model/order.js";
 import Usermodel from "../model/userModel.js";
 
+export const ordered = async (req, res) => {
+    const ordered  = await Order.find({})
+    console.log("done")
+    res.status(200).json(ordered)
+}
+
+
 export const CreateOrder=async(req,res)=>{
     try{
         const{
