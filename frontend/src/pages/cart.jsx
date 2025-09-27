@@ -15,7 +15,7 @@ function Cart() {
   const { cart, remove, add, decrease, getTotal } = CartStore();
   const { token } = AuthStore()
   console.log(cart)
-  
+
 
   useEffect(() => {
     if (cart.length === 0) {
@@ -28,11 +28,9 @@ function Cart() {
   return <><Header />
     {
       token ? <>
-      
-
         <div className="cart-details">
           <center><h2>Your Cart</h2></center>
-          
+
           <Container >
             <Row className="flex-column">
               {cart.map((item) => (
@@ -54,20 +52,17 @@ function Cart() {
                           <div className="cart-text">
                             <ListGroup.Item>{item.name}</ListGroup.Item>
                             <ListGroup.Item>₹{item.price}</ListGroup.Item>
-                           <div className="quantity-control">
-                             <button onClick={() => decrease(item.id)}>-</button>
-                            <input
-                              type="text"
-                              value={item.quantity}
-                              readOnly
-                            // style={{ width: "40px", textAlign: "center" }}
-                            />
-                            <button onClick={() => add(item)}>+</button>
-                           </div>
+                            <div className="quantity-control">
+                              <button onClick={() => decrease(item.id)}>-</button>
+                              <input
+                                type="text"
+                                value={item.quantity}
+                                readOnly
+                              // style={{ width: "40px", textAlign: "center" }}
+                              />
+                              <button onClick={() => add(item)}>+</button>
+                            </div>
                           </div>
-
-
-
                           <Button
                             variant="danger"
                             className="btn"
@@ -75,7 +70,6 @@ function Cart() {
                           >
                             Remove
                           </Button>
-
                         </div>
                       </ListGroup>
                     </Card.Body>
@@ -84,20 +78,17 @@ function Cart() {
               ))}
             </Row>
           </Container></div>
- 
-    <footer className="footer">
-      <div className="footer-content">
-        <div className="footer-links">
-         <h2>Total Amount = ₹{getTotal()}</h2>
-         <Link to={'/checkout'} className="check">Place order</Link>
-        </div>
-      </div>
-    </footer>
-  
 
+        <footer className="footer">
+          <div className="footer-content">
+            <div className="footer-links">
+              <h2>Total Amount = ₹{getTotal()}</h2>
+              <Link to={'/checkout'} className="check">Place order</Link>
+            </div>
+          </div>
+        </footer>
 
-      
-      </>  : <Navigate to={"/login"} />
+      </> : <Navigate to={"/login"} />
     }
   </>
 }

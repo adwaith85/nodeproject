@@ -25,11 +25,11 @@ function DisplayCategory() {
 
     useEffect(() => {
         getcateItems()
-    }, [{name}])
+    }, [{ name }])
 
     return <>
-    <Header/>
-    <CateOption/>
+        <Header />
+        <CateOption />
 
         <h2>{name}</h2>
         {

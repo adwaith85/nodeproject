@@ -66,7 +66,7 @@ function Header({ SetSearchItem }) {
 
 
           <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text>
+          <Navbar.Text className="auth-link">
               {!token?(
               <Link to={'/Login'} className="nav-link">LOGIN</Link>
             ):<button className="nav-link ad" onClick={() => {

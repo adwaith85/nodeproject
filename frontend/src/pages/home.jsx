@@ -1,105 +1,59 @@
-import { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import Header from "../components/Navbar"
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-
-import { Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import Header from "../components/Navbar";
+import Card from "react-bootstrap/Card";
+import ListGroup from "react-bootstrap/ListGroup";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
 
 import AuthStore from "../AuthStore";
+import CartStore from "../store";
 
 function Home() {
+    const [data, SetData] = useState([]);
+    const [cart, setCart] = useState([]); // initialize as empty array
+    const [searchItem, SetSearchItem] = useState("");
 
-    const [data, SetData] = useState([])
-    const [cart, setCart] = useState()
-
-    
-    const [searchItem, SetSearchItem] = useState("")
-
-    const navigate = useNavigate()
-    const { token } = AuthStore()
-
+    const navigate = useNavigate();
+    const { token } = AuthStore();
 
     const getData = async () => {
-        // Or wherever you stored the JWT
-
         let res = await fetch(`http://localhost:8000/products?search=${searchItem}`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`
-            }
+                Authorization: `Bearer ${token}`,
+            },
         });
+
         if (!res.ok) {
-            navigate("/login")
-            return (
-                " not logined")
-
-
+            navigate("/login");
+            return " not logined";
         }
 
+        let data = await res.json();
+        SetData(data);
+    };
 
-
-        let data = await res.json()
-
-
-        SetData(data)
-
-    }
     const additem = (item) => {
-        setCart((prev) => [...prev, item])
-    }
+        setCart((prev) => [...prev, item]);
+    };
 
     useEffect(() => {
-        getData()
+        getData();
+    }, [searchItem]);
 
-    }, [searchItem])
+    return (
+        <>
+            <Header SetSearchItem={SetSearchItem} />
+            <CateOption />
 
-
-
-
-   
-    // const deleteItem = async (id) => {
-    //     await fetch(`http://localhost:8000/products/${id}`, {
-    //         method: "DELETE"
-    //     })
-    //     SetData(currentdata => currentdata.filter(item => item._id !== id))
-
-    // }
-
-
-
-    return <>
-
-        <Header SetSearchItem={SetSearchItem} />
-        <CateOption/>
-      
-
-
-        {/* <h2 className="category-list">
-            {
-                categorylist.map(item => <div className="cate-menu">
-                <img src={item.image} alt=".." />
-                    <Link to={`/Categories/${item.name}`} className="cate-link" >{item.name}</Link>
-                    
-                </div>)
-
-            }
-        </h2> */}
-
-
-        {
-            token ?
-
+            {token ? (
                 <Container fluid>
-                    <Row >
-                        {data.map(item => (
-                            <Col key={item.id} >
+                    <Row>
+                        <HorizontalScroll>
+                            {data.map((item) => (
                                 <Detail
+                                    key={item._id}
                                     additem={additem}
                                     image={item.image}
                                     name={item.name}
@@ -107,93 +61,127 @@ function Home() {
                                     id={item._id}
                                     category={item?.category ?? ""}
                                 />
-                            </Col>
-                        ))}
+                            ))}
+                        </HorizontalScroll>
                     </Row>
-                </Container> : <Navigate to={"/login"} />
-        }
-
-
-    </>
+                </Container>
+            ) : (
+                <Navigate to={"/login"} />
+            )}
+        </>
+    );
 }
 
-
-import CartStore from "../store";
-
 function Detail(props) {
-
-    const { add } = CartStore()
+    const { add } = CartStore();
 
     const item = {
         id: props.id,
         image: props.image,
         name: props.name,
         price: props.price,
-        category: props.category
+        category: props.category,
     };
 
     return (
-
-        <Card className="card" >
+        <Card className={`card ${props.className || ""}`}>
             <ListGroup variant="flush">
-                <ListGroup.Item><img style={{ width: '13rem', height: '10rem' }} src={item.image}></img></ListGroup.Item>
+                <ListGroup.Item>
+                    <img className="card-image" src={item.image} alt={item.name} />
+                </ListGroup.Item>
                 <ListGroup.Item>{item.name}</ListGroup.Item>
                 <ListGroup.Item>{item.price}</ListGroup.Item>
-                <ListGroup.Item>
-                    {item?.category?.name ?? "no category"}
-                </ListGroup.Item>
-                <button onClick={() => {
-                    console.log(item)
-                    add(item)
-                }}>ADD TO CART</button>
-                {/* <ListGroup.Item><button onClick={() => deleteItem(item._id)}>DELETE</button></ListGroup.Item> */}
-
+                <ListGroup.Item>{item?.category?.name ?? "no category"}</ListGroup.Item>
+                <button
+                    onClick={() => {
+                        console.log(item);
+                        add(item);
+                    }}
+                >
+                    ADD TO CART
+                </button>
             </ListGroup>
         </Card>
-
-
     );
 }
 
-export {Detail}
+function CateOption() {
+    const [categorylist, setCategorylist] = useState([]);
 
-function CateOption(){
-    const [categorylist, setCategorylist] = useState([])
-
-     const getCategory = async () => {
+    const getCategory = async () => {
         let res = await fetch("http://localhost:8000/category", {
             method: "GET",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
             },
-
-        })
-        let data = await res.json()
-        setCategorylist(data)
-    }
+        });
+        let data = await res.json();
+        setCategorylist(data);
+    };
 
     useEffect(() => {
-        getCategory()
-    }, [])
+        getCategory();
+    }, []);
 
-    return<>
-     <section className="flipkart-category-strip">
-  {categorylist.map((item, index) => (
-   
-      <Link to={`/Categories/${item.name}`} className="category-label">
-         <div className="category-tile" key={index}>
-      {item.image && (
-        <img src={item.image} alt={item.name} className="category-icon" />
-      )}
-        {item.name}
-        </div>
-      </Link>
-    
-  ))}
-</section>
-    </>
+    return (
+        <section className="flipkart-category-strip">
+            {categorylist.map((item, index) => (
+                <Link to={`/Categories/${item.name}`} className="category-label" key={index}>
+                    <div className="category-tile">
+                        {item.image && <img src={item.image} alt={item.name} className="category-icon" />}
+                        {item.name}
+                    </div>
+                </Link>
+            ))}
+        </section>
+    );
 }
 
-export {CateOption}
+function HorizontalScroll({ children }) {
+    const containerRef = useRef(null);
+    const [centerIndex, setCenterIndex] = useState(0);
 
-export default Home
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const handleScroll = () => {
+            const childrenArray = Array.from(container.children);
+            const containerCenter = container.scrollLeft + container.offsetWidth / 2;
+
+            let closestIndex = 0;
+            let closestDistance = Infinity;
+
+            childrenArray.forEach((child, index) => {
+                const childCenter = child.offsetLeft + child.offsetWidth / 2;
+                const distance = Math.abs(containerCenter - childCenter);
+
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestIndex = index;
+                }
+            });
+
+            setCenterIndex(closestIndex);
+        };
+
+        container.addEventListener("scroll", handleScroll);
+        handleScroll(); // initial call
+
+        return () => container.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    return (
+        <div ref={containerRef} className="horizontal-scroll-container">
+            {React.Children.map(children, (child, index) =>
+                React.cloneElement(child, {
+                    className: (child.props.className || "") + (index === centerIndex ? " in-view" : ""),
+                    key: index,
+                })
+            )}
+        </div>
+    );
+}
+
+export { Detail, CateOption, HorizontalScroll };
+export default Home;
