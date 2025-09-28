@@ -138,49 +138,56 @@ function CateOption() {
 }
 
 function HorizontalScroll({ children }) {
-    const containerRef = useRef(null);
-    const [centerIndex, setCenterIndex] = useState(0);
+  const containerRef = useRef(null);
+  const [centerIndex, setCenterIndex] = useState(0);
 
-    useEffect(() => {
-        const container = containerRef.current;
-        if (!container) return;
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-        const handleScroll = () => {
-            const childrenArray = Array.from(container.children);
-            const containerCenter = container.scrollLeft + container.offsetWidth / 2;
+    const handleScroll = () => {
+      const cards = container.querySelectorAll('.card');
+      const containerRect = container.getBoundingClientRect();
+      const containerCenterX = containerRect.left + containerRect.width / 2;
 
-            let closestIndex = 0;
-            let closestDistance = Infinity;
+      let closestIndex = 0;
+      let closestDistance = Infinity;
 
-            childrenArray.forEach((child, index) => {
-                const childCenter = child.offsetLeft + child.offsetWidth / 2;
-                const distance = Math.abs(containerCenter - childCenter);
+      cards.forEach((card, index) => {
+        const cardRect = card.getBoundingClientRect();
+        const cardCenterX = cardRect.left + cardRect.width / 2;
+        const distance = Math.abs(containerCenterX - cardCenterX);
 
-                if (distance < closestDistance) {
-                    closestDistance = distance;
-                    closestIndex = index;
-                }
-            });
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
 
-            setCenterIndex(closestIndex);
-        };
+      setCenterIndex(closestIndex);
+    };
 
-        container.addEventListener("scroll", handleScroll);
-        handleScroll(); // initial call
+    container.addEventListener("scroll", handleScroll);
+    handleScroll(); // initial check
 
-        return () => container.removeEventListener("scroll", handleScroll);
-    }, []);
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    return (
-        <div ref={containerRef} className="horizontal-scroll-container">
-            {React.Children.map(children, (child, index) =>
-                React.cloneElement(child, {
-                    className: (child.props.className || "") + (index === centerIndex ? " in-view" : ""),
-                    key: index,
-                })
-            )}
-        </div>
-    );
+  // Spacer to allow first and last card to reach center
+  const spacerStyle = { width: 'calc(50vw - 125px)', flexShrink: 0 };
+
+  return (
+    <div ref={containerRef} className="horizontal-scroll-container">
+      <div style={spacerStyle} />
+      {React.Children.map(children, (child, index) =>
+        React.cloneElement(child, {
+          className: `${child.props.className || ""} card${index === centerIndex ? " in-view" : ""}`,
+          key: index,
+        })
+      )}
+      <div style={spacerStyle} />
+    </div>
+  );
 }
 
 export { Detail, CateOption, HorizontalScroll };

@@ -7,8 +7,8 @@ import Register from "./pages/register";
 import Login from "./pages/Login";
 import Cart from "./pages/cart";
 import Categories from "./pages/Categories";
-import DisplayCategory from "./pages/cate-items";
-import Checkout from "./pages/checkout";
+import DisplayCategory from "./components/cate-items";
+import Checkout from "./components/checkout";
 import Order from "./pages/Order";
 
 function CustomRoute() {

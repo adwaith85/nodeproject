@@ -5,8 +5,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Header from "../components/Navbar";
-import { CateOption } from "./home";
+import Header from "./Navbar";
+import { CateOption } from "../pages/home";
 
 function DisplayCategory() {
 

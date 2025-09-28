@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react"
 import AuthStore from "../AuthStore"
 import { Link } from "react-router-dom"
 import { Navigate, useNavigate } from "react-router-dom";
+import { CateOption } from "./home"
 
 
 function Admin() {
@@ -14,7 +15,6 @@ function Admin() {
 
     const { token } = AuthStore()
     console.log(token)
-
     const [name, Setname] = useState("")
     const [image, SetImage] = useState("")
     const [price, SetPrice] = useState("")
@@ -47,6 +47,60 @@ function Admin() {
         }, 1000);
 
     }
+
+       const [products, setProduct] = useState([]);
+
+const getProduct = async () => {
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch("http://localhost:8000/products", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+    });
+
+    const data = await res.json();
+    console.log("Fetched data:", data);
+
+    if (Array.isArray(data)) {
+      setProduct(data);
+    } else if (Array.isArray(data.products)) {
+      setProduct(data.products);
+    } else {
+      console.error("Unexpected response:", data);
+    }
+
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+};
+
+useEffect(() => {
+  getProduct();
+}, []);
+
+
+const [categorylist, setCategorylist] = useState([]);
+
+    const getCategory = async () => {
+        let res = await fetch("http://localhost:8000/category", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        let data = await res.json();
+        setCategorylist(data);
+    };
+
+    useEffect(() => {
+        getCategory();
+    }, []);
+
 
     const category = async () => {
         let res = await fetch('http://localhost:8000/category', {
@@ -89,6 +143,48 @@ function Admin() {
                 {/* </div> */}
             </div> : <Navigate to={"/login"} />
         }
+
+        <table border="1">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {products.map(item => (
+      <tr key={item._id}>
+        <td>{item._id}</td>
+        <td>
+          <img src={item.image} alt={item.name} width="60" height="60" />
+        </td>
+        <td>{item.name}</td>
+        <td>${item.price}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+
+   <table className="category-table">
+  <tbody>
+    <tr>
+    {categorylist.map(item => (
+      <><tr>
+        <td>{item.name}</td>
+        
+        <td>
+          <img src={item.image} alt={item.name} />
+        </td>
+        <td></td>
+        </tr>
+      </>
+    ))}</tr>
+  </tbody>
+</table>
 
        
 
