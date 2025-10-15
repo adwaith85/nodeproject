@@ -44,30 +44,31 @@ function Home() {
 
     return (
         <>
-            <Header SetSearchItem={SetSearchItem} />
-            <CateOption />
-
-            {token ? (
-                <Container fluid>
-                    <Row>
-                        <HorizontalScroll>
-                            {data.map((item) => (
-                                <Detail
-                                    key={item._id}
-                                    additem={additem}
-                                    image={item.image}
-                                    name={item.name}
-                                    price={item.price}
-                                    id={item._id}
-                                    category={item?.category ?? ""}
-                                />
-                            ))}
-                        </HorizontalScroll>
-                    </Row>
-                </Container>
-            ) : (
-                <Navigate to={"/login"} />
-            )}
+          <div className="home-page">
+    <Header SetSearchItem={SetSearchItem} />
+    <CateOption />
+    {token ? (
+      <Container fluid>
+        <Row>
+          <HorizontalScroll>
+            {data.map((item) => (
+              <Detail
+                key={item._id}
+                additem={additem}
+                image={item.image}
+                name={item.name}
+                price={item.price}
+                id={item._id}
+                category={item?.category ?? ""}
+              />
+            ))}
+          </HorizontalScroll>
+        </Row>
+      </Container>
+    ) : (
+      <Navigate to={"/login"} />
+    )}
+  </div>
         </>
     );
 }
@@ -126,7 +127,7 @@ function CateOption() {
     return (
         <section className="flipkart-category-strip">
             {categorylist.map((item, index) => (
-                <Link to={`/Categories/${item.name}`} className="category-label" key={index}>
+                <Link to={`/Categories/${item.name}`}  className="category-label" key={index}>
                     <div className="category-tile">
                         {item.image && <img src={item.image} alt={item.name} className="category-icon" />}
                         {item.name}

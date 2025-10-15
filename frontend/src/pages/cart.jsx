@@ -38,7 +38,7 @@ function Cart() {
                   <Card className="cart">
                     <Card.Body >
                       <ListGroup variant="flush">
-                        <div className="container">
+                        <div className="cart-container">
                           <div className="cartimage">
 
 
