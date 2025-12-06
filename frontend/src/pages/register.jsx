@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './Register.css'
 import { useForm } from "react-hook-form";
 
 function Register() {

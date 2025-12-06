@@ -109,9 +109,7 @@ select {
   /* center the display text in modern browsers */
 }
 
-option {
-  /* option styling is largely controlled by browser */
-}
+
 
 /* Navbar / navigation */
 .navbar {

@@ -1,0 +1,74 @@
+/* Admin / container card style */
+.admin {
+    border-radius: 1.25rem;
+    padding: var(--space-lg);
+    box-shadow: 0 0.5rem 2rem rgba(11, 62, 132, 0.37);
+    backdrop-filter: blur(10px);
+    background-color: var(--color-surface);
+    border: 1px solid rgba(27, 164, 0, 0.18);
+    text-align: center;
+    width: 90%;
+    max-width: 28rem;
+    /* ≈ 448px */
+    margin: var(--space-xl) auto 0 auto;
+    transition: transform var(--transition-long), background-color var(--transition-default);
+}
+
+.admin h1:hover {
+    color: rgb(214, 106, 106);
+    transition: color var(--transition-long);
+}
+
+.admin input,
+.admin select,
+.admin button {
+    width: 100%;
+    max-width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: 0.625rem;
+    /*10px ≈ 0.625rem*/
+    border: 1px solid var(--color-border);
+    font-size: 1rem;
+    transition: background-color var(--transition-default), border-color var(--transition-default);
+    margin-top: var(--space-md);
+}
+
+.admin input:hover,
+.admin select:hover {
+    background-color: #eaf0f1;
+}
+
+.admin button {
+    cursor: pointer;
+    background-color: var(--color-primary);
+    color: #fff;
+    border: none;
+}
+
+.admin button:hover {
+    background-color: var(--color-primary-hover);
+}
+
+/* Select / option refinement */
+select {
+    text-align-last: center;
+    /* center the display text in modern browsers */
+}
+
+.category-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.category-table th,
+.category-table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.category-table img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+}

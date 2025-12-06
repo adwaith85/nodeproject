@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
+import './Order.css'
 import AuthStore from "../AuthStore"
 import Header from "../components/Navbar"
 
 function Order() {
-  const {token}=AuthStore()
+  const { token } = AuthStore()
   console.log(token)
 
   const [order, setOrder] = useState([])
@@ -18,39 +19,39 @@ function Order() {
 
     let data = await res.json()
     setOrder(data)
-   
+
 
   }
 
-  
+
   useEffect(() => {
     Uploaded()
   }, [])
 
   return <>
     <div>
-     <Header/>
-          <div className="order">
-            <table>
+      <Header />
+      <div className="order">
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>District</th>
+            <th>Number</th>
+          </tr>
+          {
+            order.map(item => <>
               <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>District</th>
-                <th>Number</th>
-              </tr>
-              {
-                order.map(item=><>
-                <tr>
                 <th>{item.userId}</th>
                 <th>{item.name}</th>
                 <th>{item.district}</th>
                 <th>{item.number}</th>
               </tr>
-                </>)
-              }
-            </table>
-          </div>
-        
+            </>)
+          }
+        </table>
+      </div>
+
     </div>
 
   </>

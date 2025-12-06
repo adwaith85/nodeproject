@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import './Navbar.css'
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -12,7 +13,7 @@ import NavLink from "./NavLink";
 import AuthStore from "../AuthStore";
 
 function Header({ SetSearchItem }) {
-    
+
 
   const { removeToken, token } = AuthStore()
   // const getData=async()=>{
@@ -27,7 +28,7 @@ function Header({ SetSearchItem }) {
   const location = useLocation()
 
   console.log("location", location.pathname)
-  
+
   return <>
     <Navbar expand="md" className="bg-primary" variant="dark">
       <Container fluid className="toggle">
@@ -42,11 +43,11 @@ function Header({ SetSearchItem }) {
             <Link to={'/'} className="nav-link">HOME</Link>
             <Link to={'/cart'} className="nav-link">CART</Link>
             <Link to={'/admin'} className="nav-link">ADMIN</Link>
-            
-            <Link to={'/Categories'} className="nav-link">CATEGORY</Link>
-        
 
-        
+            <Link to={'/Categories'} className="nav-link">CATEGORY</Link>
+
+
+
           </Nav>
           <NavLink showOn={[
             "/",
@@ -59,22 +60,22 @@ function Header({ SetSearchItem }) {
                 className=""
                 aria-label="Search"
               />
-              <Button variant="outline-success" style={{margin:"auto"}}>Search</Button>
+              <Button variant="outline-success" style={{ margin: "auto" }}>Search</Button>
             </Form>
           </NavLink>
         </Navbar.Collapse>
 
 
-          <Navbar.Collapse className="justify-content-end">
+        <Navbar.Collapse className="justify-content-end">
           <Navbar.Text className="auth-link">
-              {!token?(
+            {!token ? (
               <Link to={'/Login'} className="nav-link">LOGIN</Link>
-            ):<button className="nav-link ad" onClick={() => {
+            ) : <button className="nav-link ad" onClick={() => {
 
 
-                removeToken()
-                // alert("loged out")
-              }}>LOGOUT</button> 
+              removeToken()
+              // alert("loged out")
+            }}>LOGOUT</button>
             }
           </Navbar.Text>
         </Navbar.Collapse>
