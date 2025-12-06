@@ -13,80 +13,52 @@ import NavLink from "./NavLink";
 import AuthStore from "../AuthStore";
 
 function Header({ SetSearchItem }) {
-
-
   const { removeToken, token } = AuthStore()
-  // const getData=async()=>{
-  //     let res=await fetch(`http://localhost:8000/products?search=${searchItem}`)
-  //     let data=await res.json()
-  //     SetData(data)
-  // }
-  // useEffect(()=>{
-  //     getData()
-  // },[searchItem])
-
   const location = useLocation()
 
-  console.log("location", location.pathname)
-
-  return <>
-    <Navbar expand="md" className="bg-primary" variant="dark">
-      <Container fluid className="toggle">
+  return (
+    <Navbar expand="lg" className="navbar" fixed="top">
+      <Container>
+        <Navbar.Brand as={Link} to="/" className="navbar-brand">
+          Shop<span>Cart</span>
+        </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="navbarScroll" />
-        <Navbar.Collapse id="navbarScroll" >
-          <Nav
-            className="navcontent"
-            style={{ maxHeight: '200px' }}
-            navbarScroll
-          >
-            <Link to={'/'} className="nav-link">HOME</Link>
-            <Link to={'/cart'} className="nav-link">CART</Link>
-            <Link to={'/admin'} className="nav-link">ADMIN</Link>
-
-            <Link to={'/Categories'} className="nav-link">CATEGORY</Link>
-
-
-
+        <Navbar.Collapse id="navbarScroll">
+          <Nav className="me-auto my-2 my-lg-0 navcontent" navbarScroll>
+            <Nav.Link as={Link} to="/" className="nav-link">Home</Nav.Link>
+            <Nav.Link as={Link} to="/Categories" className="nav-link">Categories</Nav.Link>
+            {token && (
+              <>
+                <Nav.Link as={Link} to="/cart" className="nav-link">Cart</Nav.Link>
+                <Nav.Link as={Link} to="/order" className="nav-link">Orders</Nav.Link>
+                <Nav.Link as={Link} to="/admin" className="nav-link">Admin</Nav.Link>
+              </>
+            )}
           </Nav>
-          <NavLink showOn={[
-            "/",
-          ]}>
-            <Form className="navsearch">
+
+          <NavLink showOn={["/"]}>
+            <Form className="d-flex navsearch">
               <Form.Control
                 onChange={(e) => SetSearchItem(e.target.value)}
                 type="search"
-                placeholder="Search"
-                className=""
+                placeholder="Search for products..."
                 aria-label="Search"
               />
-              <Button variant="outline-success" style={{ margin: "auto" }}>Search</Button>
             </Form>
           </NavLink>
-        </Navbar.Collapse>
 
-
-        <Navbar.Collapse className="justify-content-end">
-          <Navbar.Text className="auth-link">
+          <div className="auth-link">
             {!token ? (
-              <Link to={'/Login'} className="nav-link">LOGIN</Link>
-            ) : <button className="nav-link ad" onClick={() => {
-
-
-              removeToken()
-              // alert("loged out")
-            }}>LOGOUT</button>
-            }
-          </Navbar.Text>
+              <Link to="/Login" className="nav-link">Login</Link>
+            ) : (
+              <button className="nav-link ad" onClick={removeToken}>Logout</button>
+            )}
+          </div>
         </Navbar.Collapse>
-
-
       </Container>
     </Navbar>
-
-
-  </>
+  );
 }
-
 
 export default Header
