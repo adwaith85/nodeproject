@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import './Home.css'
+import LandingPage from "./LandingPage";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Header from "../components/Navbar";
 import Card from "react-bootstrap/Card";
@@ -19,6 +20,8 @@ function Home() {
   const { token } = AuthStore();
 
   const getData = async () => {
+    if (!token) return;
+
     let res = await fetch(`http://localhost:8000/products?search=${searchItem}`, {
       method: "GET",
       headers: {
@@ -40,34 +43,38 @@ function Home() {
   };
 
   useEffect(() => {
-    getData();
-  }, [searchItem]);
+    if (token) {
+      getData();
+    }
+  }, [searchItem, token]);
 
   return (
     <>
       <div className="home-page">
         <Header SetSearchItem={SetSearchItem} />
-        <CateOption />
         {token ? (
-          <Container fluid>
-            <Row>
-              <HorizontalScroll>
-                {data.map((item) => (
-                  <Detail
-                    key={item._id}
-                    additem={additem}
-                    image={item.image}
-                    name={item.name}
-                    price={item.price}
-                    id={item._id}
-                    category={item?.category ?? ""}
-                  />
-                ))}
-              </HorizontalScroll>
-            </Row>
-          </Container>
+          <>
+            <CateOption />
+            <Container fluid>
+              <Row>
+                <HorizontalScroll>
+                  {data.map((item) => (
+                    <Detail
+                      key={item._id}
+                      additem={additem}
+                      image={item.image}
+                      name={item.name}
+                      price={item.price}
+                      id={item._id}
+                      category={item?.category ?? ""}
+                    />
+                  ))}
+                </HorizontalScroll>
+              </Row>
+            </Container>
+          </>
         ) : (
-          <Navigate to={"/login"} />
+          <LandingPage />
         )}
       </div>
     </>
