@@ -3,10 +3,12 @@ import './Home.css'
 import LandingPage from "./LandingPage";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Header from "../components/Navbar";
+import Footer from "../components/Footer";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
+import Carousel from 'react-bootstrap/Carousel';
 
 import AuthStore from "../AuthStore";
 import CartStore from "../store";
@@ -54,9 +56,17 @@ function Home() {
         <Header SetSearchItem={SetSearchItem} />
         {token ? (
           <>
+            <HomeCarousel />
             <CateOption />
+
+            <div className="home-welcome-section">
+              <h1>Welcome to ShopCart</h1>
+              <p>Discover the best deals on electronics, fashion, and more. Shop now and get exclusive offers!</p>
+            </div>
+
             <Container fluid>
               <Row>
+                <h3 className="text-center mb-4">Featured Products</h3>
                 <HorizontalScroll>
                   {data.map((item) => (
                     <Detail
@@ -72,12 +82,115 @@ function Home() {
                 </HorizontalScroll>
               </Row>
             </Container>
+
+            <section className="features-section">
+              <h2>Why Choose Us</h2>
+              <div className="features-grid">
+                <div className="feature-card">
+                  <span className="feature-icon">🚀</span>
+                  <h3>Fast Delivery</h3>
+                  <p>Get your products delivered to your doorstep in record time.</p>
+                </div>
+                <div className="feature-card">
+                  <span className="feature-icon">🛡️</span>
+                  <h3>Secure Payment</h3>
+                  <p>Your transactions are safe and secured with top-notch encryption.</p>
+                </div>
+                <div className="feature-card">
+                  <span className="feature-icon">🎧</span>
+                  <h3>24/7 Support</h3>
+                  <p>Our customer support team is always here to help you.</p>
+                </div>
+                <div className="feature-card">
+                  <span className="feature-icon">💎</span>
+                  <h3>Best Quality</h3>
+                  <p>We guarantee the best quality products for our customers.</p>
+                </div>
+              </div>
+            </section>
+
+            <section className="newsletter-section">
+              <div className="newsletter-content">
+                <h2>Subscribe to our Newsletter</h2>
+                <p>Stay updated with our latest products and exclusive offers.</p>
+                <form className="newsletter-form" onSubmit={(e) => e.preventDefault()}>
+                  <input type="email" placeholder="Enter your email" className="newsletter-input" />
+                  <button type="submit" className="newsletter-btn">Subscribe</button>
+                </form>
+              </div>
+            </section>
+
+            <Footer />
           </>
         ) : (
           <LandingPage />
         )}
       </div>
     </>
+  );
+}
+
+function HomeCarousel() {
+  return (
+    <div className="home-carousel-container">
+      <Carousel>
+        <Carousel.Item>
+          <img
+            className="d-block w-100 carousel-item-img"
+            src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            alt="First slide"
+          />
+          <Carousel.Caption className="carousel-caption-custom">
+            <h3>Big Sale!</h3>
+            <p>Get up to 50% off on selected items.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100 carousel-item-img"
+            src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            alt="Second slide"
+          />
+          <Carousel.Caption className="carousel-caption-custom">
+            <h3>New Arrivals</h3>
+            <p>Check out the latest fashion trends.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100 carousel-item-img"
+            src="https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            alt="Third slide"
+          />
+          <Carousel.Caption className="carousel-caption-custom">
+            <h3>Electronics</h3>
+            <p>Upgrade your gadgets today.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100 carousel-item-img"
+            src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1999&q=80"
+            alt="Fourth slide"
+          />
+          <Carousel.Caption className="carousel-caption-custom">
+            <h3>Accessories</h3>
+            <p>Complete your look with our accessories.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className="d-block w-100 carousel-item-img"
+            src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80"
+            alt="Fifth slide"
+          />
+          <Carousel.Caption className="carousel-caption-custom">
+            <h3>Limited Time Offer</h3>
+            <p>Don't miss out on these deals.</p>
+          </Carousel.Caption>
+        </Carousel.Item>
+      </Carousel>
+    </div>
   );
 }
 
@@ -98,16 +211,16 @@ function Detail(props) {
         <ListGroup.Item>
           <img className="card-image" src={item.image} alt={item.name} />
         </ListGroup.Item>
-        <ListGroup.Item>{item.name}</ListGroup.Item>
-        <ListGroup.Item>{item.price}</ListGroup.Item>
-        <ListGroup.Item>{item?.category?.name ?? "no category"}</ListGroup.Item>
+        <ListGroup.Item className="product-name" title={item.name}>{item.name}</ListGroup.Item>
+        <ListGroup.Item className="product-price">₹{item.price}</ListGroup.Item>
+        <ListGroup.Item className="product-category">{item?.category?.name ?? "no category"}</ListGroup.Item>
         <button
           onClick={() => {
             console.log(item);
             add(item);
           }}
         >
-          ADD TO CART
+          Add to Cart
         </button>
       </ListGroup>
     </Card>
@@ -135,11 +248,9 @@ function CateOption() {
   return (
     <section className="flipkart-category-strip">
       {categorylist.map((item, index) => (
-        <Link to={`/Categories/${item.name}`} className="category-label" key={index}>
-          <div className="category-tile">
-            {item.image && <img src={item.image} alt={item.name} className="category-icon" />}
-            {item.name}
-          </div>
+        <Link to={`/Categories/${item.name}`} className="category-tile" key={index}>
+          {item.image && <img src={item.image} alt={item.name} className="category-icon" />}
+          <span className="category-label">{item.name}</span>
         </Link>
       ))}
     </section>
