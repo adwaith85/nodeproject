@@ -23,17 +23,17 @@ export const login = async (req, res) => {
         const isMatch = await user.comparePassword(password)
 
         if (isMatch) {
-            const token = jwt.sign({ email: user.email ,role:user.role}, 'qwerty', { expiresIn: '24h' });
+            const token = jwt.sign({ email: user.email, role: user.role }, 'qwerty', { expiresIn: '24h' });
 
             res.json({
                 status: "login done",
                 token: token
             })
         } else {
-            res.send("wrong password")
+            res.status(401).json({ error: "Wrong password" })
         }
     } else {
-        res.send("no user found")
+        res.status(404).json({ error: "No user found" })
     }
 
 

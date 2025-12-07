@@ -19,11 +19,13 @@ function Header({ SetSearchItem }) {
   return (
     <Navbar expand="lg" className="navbar" fixed="top">
       <Container>
-        <Navbar.Brand as={Link} to="/" className="navbar-brand">
-          Shop<span>Cart</span>
-        </Navbar.Brand>
+        <div className="d-flex align-items-center gap-2">
+          <Navbar.Toggle aria-controls="navbarScroll" />
+          <Navbar.Brand as={Link} to="/" className="navbar-brand me-0">
+            Shop<span>Cart</span>
+          </Navbar.Brand>
+        </div>
 
-        <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav className="me-auto my-2 my-lg-0 navcontent" navbarScroll>
             <Nav.Link as={Link} to="/" className="nav-link">Home</Nav.Link>
