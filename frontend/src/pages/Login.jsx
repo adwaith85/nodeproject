@@ -30,6 +30,7 @@ function Login() {
 
             if (res.ok && data.token) {
                 addToken(data.token)
+                alert("logined successfully")
                 navigate("/")
             } else {
                 setError(data.error || "Login failed. Please check your credentials.")

@@ -3,15 +3,20 @@ import Usermodel from "../model/userModel.js"
 import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {
-    const { email, password } = req.body
+    const { email, password, name, number } = req.body
 
-    await Usermodel.create({ email, password })
+    try {
+        const existingUser = await Usermodel.findOne({ email })
+        if (existingUser) {
+            return res.status(400).json({ error: "User already exists" })
+        }
 
-
-    res.send("created ok")
-
-
-
+        await Usermodel.create({ email, password, name, number })
+        res.status(201).json({ message: "Registration successful" })
+    } catch (error) {
+        console.error("Registration error:", error)
+        res.status(500).json({ error: "Internal server error" })
+    }
 }
 
 export const login = async (req, res) => {
