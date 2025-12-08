@@ -3,7 +3,6 @@ import './Home.css'
 import LandingPage from "./LandingPage";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Header from "../components/Navbar";
-import Footer from "../components/Footer";
 import Card from "react-bootstrap/Card";
 import ListGroup from "react-bootstrap/ListGroup";
 import Container from "react-bootstrap/Container";
@@ -24,20 +23,26 @@ function Home() {
   const getData = async () => {
     if (!token) return;
 
-    let res = await fetch(`http://localhost:8000/products?search=${searchItem}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+      let res = await fetch(`http://localhost:8000/products?search=${searchItem}`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    if (!res.ok) {
-      navigate("/login");
-      return " not logined";
+      if (!res.ok) {
+        if (res.status === 401 || res.status === 403) {
+          navigate("/login");
+        }
+        return;
+      }
+
+      let data = await res.json();
+      SetData(data);
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
     }
-
-    let data = await res.json();
-    SetData(data);
   };
 
   const additem = (item) => {
@@ -68,17 +73,21 @@ function Home() {
               <Row>
                 <h3 className="text-center mb-4">Featured Products</h3>
                 <HorizontalScroll>
-                  {data.map((item) => (
-                    <Detail
-                      key={item._id}
-                      additem={additem}
-                      image={item.image}
-                      name={item.name}
-                      price={item.price}
-                      id={item._id}
-                      category={item?.category ?? ""}
-                    />
-                  ))}
+                  {data.length > 0 ? (
+                    data.map((item) => (
+                      <Detail
+                        key={item._id}
+                        additem={additem}
+                        image={item.image}
+                        name={item.name}
+                        price={item.price}
+                        id={item._id}
+                        category={item?.category ?? ""}
+                      />
+                    ))
+                  ) : (
+                    <p className="text-center w-100">No products found.</p>
+                  )}
                 </HorizontalScroll>
               </Row>
             </Container>
@@ -120,7 +129,7 @@ function Home() {
               </div>
             </section>
 
-            <Footer />
+            {/* <Footer /> */}
           </>
         ) : (
           <LandingPage />
@@ -231,14 +240,19 @@ function CateOption() {
   const [categorylist, setCategorylist] = useState([]);
 
   const getCategory = async () => {
-    let res = await fetch("http://localhost:8000/category", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    let data = await res.json();
-    setCategorylist(data);
+    try {
+      let res = await fetch("http://localhost:8000/category", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) return;
+      let data = await res.json();
+      setCategorylist(data);
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
   };
 
   useEffect(() => {

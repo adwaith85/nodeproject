@@ -16,7 +16,7 @@ const AuthStore = create(
     }),
     {
       name: "Auth-storage", // key name in storage
-      storage: createJSONStorage(() => localStorage), // defaults to localStorage
+      storage: createJSONStorage(() => sessionStorage), // defaults to localStorage
     }
   )
 )

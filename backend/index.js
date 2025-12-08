@@ -13,12 +13,16 @@ import cateItemROute from "./route/cateItem.js"
 import OrderRouter from "./route/order.js"
 
 dotenv.config()
-const MONGO_URL = process.env.MONGO_URL
-const PORT = process.env.PORT
+const MONGO_URL = process.env.MONGO_URL || "mongodb://localhost:27017/ecommerce"
+const PORT = process.env.PORT || 8000
 
 
 const app = express()
-mongoose.connect(MONGO_URL)
+mongoose
+    .connect(MONGO_URL)
+    .then(() => console.log("DB Connected"))
+    .catch((err) => console.log("DB Connection Error:", err));
+
 app.use(express.json())
 app.use(cors())
 

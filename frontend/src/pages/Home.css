@@ -184,6 +184,18 @@
     font-size: 0.9rem;
 }
 
+
+@media (max-width: 768px) {
+    .features-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        max-width: 800px;
+        display: flex;
+        flex-flow: column;
+        gap: 2rem;
+    }
+
+}
+
 /* Newsletter Section */
 .newsletter-section {
     background: linear-gradient(135deg, #4a90e2, #357abd);
@@ -359,10 +371,3 @@
 }
 
 /* Prevent effect from leaking to other sections */
-.flipkart-category-strip,
-.flipkart-category-strip *,
-.category-page .card,
-.cart-page .card {
-    /* transform: none !important; */
-    /* transition: none !important; */
-}

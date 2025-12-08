@@ -4,23 +4,23 @@ import Product from "../model/productmodel.js"
 
 export const item = async (req, res) => {
 
-    const item = req.query.search;
+    const searchItem = req.query.search;
+    console.log("Search term:", searchItem);
 
-    if (item != "") {
-        const pro = await Product.findOne({ name: item })
-        if (pro) {
-            return res.json(new Array(pro))
+    try {
+        let products;
+        if (searchItem && searchItem.trim() !== "") {
+            // Use regex for partial match and case-insensitive search
+            const regex = new RegExp(searchItem, 'i');
+            products = await Product.find({ name: regex }).populate("category").exec();
         } else {
-            return res.json([])
+            products = await Product.find({}).populate("category").exec();
         }
-
+        res.json(products);
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        res.status(500).json({ message: "Server Error" });
     }
-
-    console.log("get request", item)
-
-    const items = await Product.find({}).populate("category").exec()
-
-    res.json(items)
 
 }
 
