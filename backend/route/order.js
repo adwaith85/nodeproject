@@ -8,6 +8,6 @@ const order = express.Router();
 order.get("/order", LoginCheck, ordered)
 order.post("/order", LoginCheck, CreateOrder)
 order.get("/order/count", LoginCheck, getUserOrderCount)
-order.get("/admin/orders", getAllOrders)
+order.get("/admin/orders", LoginCheck, getAllOrders)
 
 export default order;

@@ -13,7 +13,12 @@ const UserSchema = new mongoose.Schema({
   password: String,
   address: String,
   profileImage: String,
-})
+  status: {
+    type: String,
+    enum: ["Login", "Logout"],
+    default: "Logout"
+  }
+}, { timestamps: true })
 
 
 UserSchema.pre('save', async function (next) {

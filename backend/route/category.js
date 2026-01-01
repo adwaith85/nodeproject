@@ -1,12 +1,12 @@
 import express from "express"
 import { addcategory, category, deletecategory, updatecategory } from "../controller/category.js"
-
+import { LoginCheck } from "../middleware/Auth.js"
 
 const router = express.Router()
 
-router.get('/category', category)
-router.post('/category', addcategory)
-router.delete('/category/:id', deletecategory)
-router.put('/category/:id', updatecategory)
+router.get('/category', LoginCheck, category)
+router.post('/category', LoginCheck, addcategory)
+router.delete('/category/:id', LoginCheck, deletecategory)
+router.put('/category/:id', LoginCheck, updatecategory)
 
 export default router

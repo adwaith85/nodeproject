@@ -1,5 +1,5 @@
 import Usermodel from "../model/userModel.js"
-
+import Order from "../model/order.js"
 import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {
@@ -30,6 +30,10 @@ export const login = async (req, res) => {
         if (isMatch) {
             const token = jwt.sign({ email: user.email, role: user.role }, 'qwerty', { expiresIn: '24h' });
 
+            // Update status to Login
+            user.status = "Login";
+            await user.save();
+
             res.json({
                 status: "login done",
                 token: token
@@ -49,10 +53,15 @@ export const login = async (req, res) => {
 export const getUser = async (req, res) => {
     try {
         const user = await Usermodel.findOne({ email: req.user.email })
+        if (user && user.status !== "Login") {
+            user.status = "Login";
+            await user.save();
+        }
         res.json(user)
     }
     catch (err) {
         console.log(err)
+        res.status(500).json({ error: "Failed to fetch user" })
     }
 }
 
@@ -98,3 +107,45 @@ export const updateUser = async (req, res) => {
         res.status(500).json({ error: "Failed to update user" });
     }
 };
+
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await Usermodel.find().sort({ createdAt: -1 });
+        const usersWithCounts = await Promise.all(users.map(async (user) => {
+            const orderCount = await Order.countDocuments({ userId: user._id });
+            return {
+                ...user.toObject(),
+                orderCount
+            };
+        }));
+        res.json(usersWithCounts);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch users" });
+    }
+}
+
+export const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Usermodel.findByIdAndDelete(id);
+        res.status(200).json({ message: "User deleted" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to delete user" });
+    }
+}
+
+export const logout = async (req, res) => {
+    try {
+        const user = await Usermodel.findOne({ email: req.user.email });
+        if (user) {
+            user.status = "Logout";
+            await user.save();
+        }
+        res.status(200).json({ message: "Logout successful" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Logout failed" });
+    }
+}

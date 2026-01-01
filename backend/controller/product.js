@@ -39,14 +39,22 @@ export const itemadd = (req, res) => {
 export const deleteitem = async (req, res) => {
     try {
         const { id } = req.params
-        console.log(id)
-
         await Product.findByIdAndDelete(id)
-
+        res.status(200).json({ message: "Product deleted" })
     } catch (err) {
-        console.log(err)
+        console.error(err)
+        res.status(500).json({ error: "Failed to delete" })
     }
+}
 
-    res.send("deleted")
-
+export const updateitem = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { name, image, price, category } = req.body
+        const updated = await Product.findByIdAndUpdate(id, { name, image, price, category }, { new: true })
+        res.status(200).json(updated)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Update failed" })
+    }
 }
