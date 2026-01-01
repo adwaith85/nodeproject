@@ -22,12 +22,23 @@ export const addcategory = async (req, res) => {
 export const deletecategory = async (req, res) => {
     try {
         const { id } = req.params
-        console.log(id)
+        console.log("Deleting Category:", id)
         await Category.findByIdAndDelete(id)
-        res.send("deleted")
+        res.status(200).json({ message: "Category deleted" })
     } catch (err) {
-        console.log(err)
+        console.error(err)
+        res.status(500).json({ error: "Failed to delete" })
     }
+}
 
-
+export const updatecategory = async (req, res) => {
+    try {
+        const { id } = req.params
+        const { name, image } = req.body
+        const updated = await Category.findByIdAndUpdate(id, { name, image }, { new: true })
+        res.status(200).json(updated)
+    } catch (err) {
+        console.error(err)
+        res.status(500).json({ error: "Update failed" })
+    }
 }

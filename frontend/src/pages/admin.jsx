@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import './Admin.css'
 import AuthStore from "../AuthStore"
 import { Link, Navigate } from "react-router-dom"
+import React from 'react';
 
 function Admin() {
   const { token } = AuthStore()
@@ -13,13 +14,16 @@ function Admin() {
   const [orders, setOrders] = useState([])
   const [categories, setCategories] = useState([])
   const [products, setProducts] = useState([])
-  const [selectedCategory, setSelectedCategory] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState(null) // Only for products tab filtering if needed later, but removed from Cat tab
 
   // Form Inputs
   const [name, setName] = useState("")
   const [image, setImage] = useState("")
   const [price, setPrice] = useState("")
   const [catId, setCatId] = useState("")
+
+  // Editing State
+  const [editingId, setEditingId] = useState(null)
 
   const nameRef = useRef()
   const imageRef = useRef()
@@ -55,12 +59,9 @@ function Admin() {
   useEffect(() => {
     if (token) {
       if (activeTab === 'orders') fetchAllOrders()
-      if (activeTab === 'categories') {
-        fetchCategories()
-        fetchProducts(selectedCategory)
-      }
+      if (activeTab === 'categories') fetchCategories()
       if (activeTab === 'products') {
-        fetchProducts()
+        fetchProducts(selectedCategory)
         fetchCategories()
       }
     }
@@ -78,7 +79,7 @@ function Admin() {
       })
       alert("Product Created!")
       resetForm()
-      fetchProducts()
+      fetchProducts(selectedCategory)
     } catch (e) { console.error(e) }
     finally { setLoading(false) }
   }
@@ -87,20 +88,47 @@ function Admin() {
     if (!name) return alert("Category name required")
     setLoading(true)
     try {
-      await fetch("http://localhost:8000/category", {
-        method: "POST",
+      const method = editingId ? "PUT" : "POST"
+      const url = editingId ? `http://localhost:8000/category/${editingId}` : "http://localhost:8000/category"
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ name, image })
       })
-      alert("Category Created!")
-      resetForm()
-      fetchCategories()
+
+      if (res.ok) {
+        alert(editingId ? "Category Updated!" : "Category Created!")
+        resetForm()
+        setEditingId(null)
+        fetchCategories()
+      }
     } catch (e) { console.error(e) }
     finally { setLoading(false) }
   }
 
+  const handleDeleteCategory = async (id) => {
+    if (!window.confirm("Delete this category?")) return
+    try {
+      await fetch(`http://localhost:8000/category/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      })
+      fetchCategories()
+    } catch (e) { console.error(e) }
+  }
+
+  const startEditCategory = (cat) => {
+    setEditingId(cat._id)
+    setName(cat.name)
+    setImage(cat.image)
+    if (nameRef.current) nameRef.current.value = cat.name
+    if (imageRef.current) imageRef.current.value = cat.image
+  }
+
   const resetForm = () => {
     setName(""); setImage(""); setPrice(""); setCatId("")
+    setEditingId(null)
     if (nameRef.current) nameRef.current.value = ""
     if (imageRef.current) imageRef.current.value = ""
     if (priceRef.current) priceRef.current.value = ""
@@ -119,7 +147,7 @@ function Admin() {
           <Link to="/" className="back-link">← Home</Link>
           <div className="admin-tabs">
             <button className={`tab-btn ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => setActiveTab('orders')}>Orders</button>
-            <button className={`tab-btn ${activeTab === 'categories' ? 'active' : ''}`} onClick={() => { setActiveTab('categories'); setSelectedCategory(null); }}>Categories</button>
+            <button className={`tab-btn ${activeTab === 'categories' ? 'active' : ''}`} onClick={() => { setActiveTab('categories'); setEditingId(null); resetForm(); }}>Categories</button>
             <button className={`tab-btn ${activeTab === 'products' ? 'active' : ''}`} onClick={() => setActiveTab('products')}>Products</button>
           </div>
           <div className="admin-user-marker">ADMIN ROLE</div>
@@ -218,55 +246,63 @@ function Admin() {
 
         {/* CATEGORY SECTION */}
         {activeTab === 'categories' && (
-          <section className="dashboard-section">
-            <h1 className="section-title">Category Management</h1>
-            <div className="creation-card">
-              <h3>Create New Category</h3>
-              <div className="admin-form-grid">
-                <div className="form-group">
-                  <label>Category Label</label>
-                  <input ref={nameRef} className="form-input" placeholder="e.g. Mobiles" onChange={e => setName(e.target.value)} />
-                </div>
-                <div className="form-group">
-                  <label>Icon URL (Optional)</label>
-                  <input ref={imageRef} className="form-input" placeholder="https://..." onChange={e => setImage(e.target.value)} />
-                </div>
+          <section className="dashboard-section cat-section-compact">
+            <h1 className="section-title">Category Intelligence</h1>
+
+            <div className="cat-form-container">
+              <div className="cat-form-header">
+                <h3>{editingId ? 'Modify Category' : 'New Classification'}</h3>
+                {editingId && <button className="cancel-edit-btn" onClick={resetForm}>Cancel Edit</button>}
               </div>
-              <button className="submit-btn" onClick={handleCategorySubmit} disabled={loading}>
-                {loading ? 'Processing...' : 'Add Category'}
-              </button>
+              <div className="cat-standard-form">
+                <div className="form-item">
+                  <label>Classification Name</label>
+                  <input ref={nameRef} className="cat-input-box" placeholder="e.g. Premium Watches" value={name} onChange={e => setName(e.target.value)} />
+                </div>
+                <div className="form-item">
+                  <label>Iconography URL</label>
+                  <input ref={imageRef} className="cat-input-box" placeholder="https://source.unsplash.com/..." value={image} onChange={e => setImage(e.target.value)} />
+                </div>
+                <button className="cat-submit-btn" onClick={handleCategorySubmit} disabled={loading}>
+                  {loading ? 'Working...' : editingId ? 'Update Record' : 'Register Category'}
+                </button>
+              </div>
             </div>
-            <div className="category-view">
-              <div className="category-sorter">
-                <button className={`sort-pill ${!selectedCategory ? 'active' : ''}`} onClick={() => setSelectedCategory(null)}>All Categories</button>
-                {categories.map(cat => (
-                  <button key={cat._id} className={`sort-pill ${selectedCategory === cat._id ? 'active' : ''}`} onClick={() => setSelectedCategory(cat._id)}>
-                    {cat.name}
-                  </button>
-                ))}
-              </div>
-              <div className="table-container">
-                <table className="premium-table">
-                  <thead>
-                    <tr>
-                      <th>Image</th>
-                      <th>Product Name</th>
-                      <th>Price</th>
-                      <th>Category</th>
+
+            <div className="cat-table-wrapper">
+              <table className="cat-premium-table">
+                <thead>
+                  <tr>
+                    <th>Created Time</th>
+                    <th>Created Date</th>
+                    <th>Category ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {categories.map(cat => (
+                    <tr key={cat._id}>
+                      <td className="cat-time-cell">{cat.createdAt ? new Date(cat.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '--:--'}</td>
+                      <td className="cat-date-cell">{cat.createdAt ? new Date(cat.createdAt).toLocaleDateString() : 'N/A'}</td>
+                      <td className="cat-id-cell">#{cat._id.slice(-6).toUpperCase()}</td>
+                      <td><img src={cat.image} className="cat-list-img" alt="" /></td>
+                      <td className="cat-name-cell"><strong>{cat.name}</strong></td>
+                      <td>
+                        <div className="cat-action-group">
+                          <button className="cat-edit-btn" onClick={() => startEditCategory(cat)}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                          </button>
+                          <button className="cat-del-btn" onClick={() => handleDeleteCategory(cat._id)}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                          </button>
+                        </div>
+                      </td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {products.map(p => (
-                      <tr key={p._id}>
-                        <td><img src={p.image} className="admin-p-img" alt="" /></td>
-                        <td><strong>{p.name}</strong></td>
-                        <td>₹{p.price}</td>
-                        <td style={{ color: '#2563eb', fontWeight: 600 }}>{p.category?.name}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </section>
         )}
@@ -302,27 +338,38 @@ function Admin() {
                 {loading ? 'Processing...' : 'Submit to Catalog'}
               </button>
             </div>
-            <div className="table-container">
-              <table className="premium-table">
-                <thead>
-                  <tr>
-                    <th>Thumbnail</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Category</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map(p => (
-                    <tr key={p._id}>
-                      <td><img src={p.image} className="admin-p-img" alt="" /></td>
-                      <td><strong>{p.name}</strong><br /><small style={{ color: '#888' }}>ID: {p._id.slice(-6)}</small></td>
-                      <td>₹{p.price}</td>
-                      <td>{p.category?.name}</td>
+
+            <div className="category-view">
+              <div className="category-sorter">
+                <button className={`sort-pill ${!selectedCategory ? 'active' : ''}`} onClick={() => setSelectedCategory(null)}>All Catalog</button>
+                {categories.map(cat => (
+                  <button key={cat._id} className={`sort-pill ${selectedCategory === cat._id ? 'active' : ''}`} onClick={() => setSelectedCategory(cat._id)}>
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+              <div className="table-container">
+                <table className="premium-table">
+                  <thead>
+                    <tr>
+                      <th>Thumbnail</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Category</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {products.map(p => (
+                      <tr key={p._id}>
+                        <td><img src={p.image} className="admin-p-img" alt="" /></td>
+                        <td><strong>{p.name}</strong><br /><small style={{ color: '#888' }}>ID: {p._id.slice(-6)}</small></td>
+                        <td>₹{p.price}</td>
+                        <td style={{ color: '#2563eb', fontWeight: 600 }}>{p.category?.name}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
         )}
@@ -331,7 +378,6 @@ function Admin() {
   )
 }
 
-// Added React import check just in case it was missing Fragment
-import React from 'react';
+// import React from 'react';
 
 export default Admin
