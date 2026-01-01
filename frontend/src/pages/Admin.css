@@ -602,30 +602,192 @@
     color: white;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 1100px) {
+/* Responsive Overhaul */
+@media (max-width: 900px) {
+    .admin-header {
+        padding: 0.5rem 0.75rem;
+    }
 
-    .prod-mini-table th:nth-child(1),
-    .prod-mini-table td:nth-child(1),
-    .prod-mini-table th:nth-child(2),
-    .prod-mini-table td:nth-child(2) {
-        display: none;
-        /* Hide time/date on small tablets to save space */
+    .admin-nav-top {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .admin-tabs {
+        width: 100%;
+        overflow-x: auto;
+        padding: 0.2rem;
+        background: #f1f5f9;
+        display: flex;
+    }
+
+    .tab-btn {
+        flex-shrink: 0;
+        padding: 0.4rem 0.6rem;
+        font-size: 0.75rem;
+    }
+
+    .admin-content-body {
+        padding: 0 0.5rem;
+        margin: 1rem auto;
     }
 }
 
 @media (max-width: 768px) {
+
+    /* Ultra-Compact Table for Mobile (All Columns Visible, No Scroll) */
+    .table-container,
+    .cat-table-wrapper,
+    .product-table-wrapper {
+        border-radius: 4px;
+        overflow-x: hidden;
+        /* No horizontal scroll */
+        width: 100%;
+    }
+
+    .premium-table,
+    .cat-premium-table,
+    .prod-mini-table,
+    .user-mini-table {
+        table-layout: fixed;
+        /* Strict column control */
+        width: 100% !important;
+        min-width: unset !important;
+    }
+
+    .premium-table th,
+    .cat-premium-table th,
+    .prod-mini-table th,
+    .user-mini-table th,
+    .premium-table td,
+    .cat-premium-table td,
+    .prod-mini-table td,
+    .user-mini-table td {
+        padding: 0.4rem 0.25rem !important;
+        font-size: 0.6rem !important;
+        line-height: 1.1;
+        word-break: break-all;
+        /* Prevent overflow */
+        overflow: hidden;
+    }
+
+    /* Specific Column Sizing for Orders */
+    .premium-table th:nth-child(1),
+    .premium-table td:nth-child(1) {
+        width: 22%;
+    }
+
+    /* ID/Name */
+    .premium-table th:nth-child(2),
+    .premium-table td:nth-child(2) {
+        width: 25%;
+    }
+
+    /* Email */
+    .premium-table th:nth-child(4),
+    .premium-table td:nth-child(4) {
+        width: 15%;
+    }
+
+    /* Status */
+
+    /* Specific Column Sizing for Categories */
+    .cat-premium-table th,
+    .cat-premium-table td {
+        width: 16%;
+    }
+
+    /* Specific Column Sizing for Products (8 columns) */
+    .prod-mini-table th,
+    .prod-mini-table td {
+        width: 12.5%;
+    }
+
+    .prod-mini-table td img {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* Specific Column Sizing for Users */
+    .user-mini-table th,
+    .user-mini-table td {
+        width: 14%;
+    }
+
+    .user-row-img {
+        width: 18px;
+        height: 18px;
+    }
+
+    .status-label,
+    .status-pill,
+    .mini-badge {
+        font-size: 0.5rem !important;
+        padding: 1px 3px !important;
+    }
+
+    .action-flex-center,
+    .cat-action-group {
+        gap: 2px;
+    }
+
+    .mini-edit-icon,
+    .mini-del-icon,
+    .cat-edit-btn,
+    .cat-del-btn,
+    .icon-toggle {
+        padding: 2px;
+    }
+
+    .mini-edit-icon svg,
+    .mini-del-icon svg,
+    .cat-edit-btn svg,
+    .cat-del-btn svg {
+        width: 10px;
+        height: 10px;
+    }
+
+    .id-block small,
+    .monospace-text {
+        font-size: 0.5rem;
+    }
+
     .form-row-group {
         grid-template-columns: 1fr;
     }
 
-    .cat-premium-table th:nth-child(1),
-    .cat-premium-table td:nth-child(1),
-    .cat-premium-table th:nth-child(2),
-    .cat-premium-table td:nth-child(2) {
-        display: none;
+    .section-title {
+        font-size: 1rem;
     }
 }
+
+@media (max-width: 480px) {
+    .admin-user-marker {
+        display: none;
+    }
+
+    /* Extreme shrink for smallest phones */
+    .premium-table td,
+    .cat-premium-table td,
+    .prod-mini-table td,
+    .user-mini-table td {
+        font-size: 0.55rem !important;
+    }
+}
+
+/* Base Responsive Utilities */
+.table-container,
+.cat-table-wrapper,
+.product-table-wrapper {
+    position: relative;
+    background: white;
+}
+
+
+/* Hide non-critical columns on mobile if necessary, or just rely on scroll */
+/* For now, relying on scroll to keep all data accessible */
+
 
 /* User Section - Member Directory */
 .user-section-compact {
