@@ -34,7 +34,7 @@ function Header({ SetSearchItem }) {
               <>
                 <Nav.Link as={Link} to="/cart" className="nav-link">Cart</Nav.Link>
                 <Nav.Link as={Link} to="/order" className="nav-link">Orders</Nav.Link>
-                <Nav.Link as={Link} to="/admin" className="nav-link">Admin</Nav.Link>
+                <Nav.Link as={Link} to="/profile" className="nav-link">Profile</Nav.Link>
               </>
             )}
           </Nav>

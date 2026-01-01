@@ -10,6 +10,7 @@ import Categories from "./pages/Categories";
 import DisplayCategory from "./components/cate-items";
 import Checkout from "./components/checkout";
 import Order from "./pages/Order";
+import Profile from "./pages/Profile";
 
 function CustomRoute() {
 
@@ -26,8 +27,9 @@ function CustomRoute() {
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/Categories" element={<Categories />} />
                 <Route path="/Categories/:name" element={<DisplayCategory />} />
-                <Route path="/checkout" element={<Checkout/>} />
-                <Route path="/Order" element={<Order/>} />
+                <Route path="/checkout" element={<Checkout />} />
+                <Route path="/Order" element={<Order />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
 
 

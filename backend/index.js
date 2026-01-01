@@ -25,6 +25,7 @@ mongoose
 
 app.use(express.json())
 app.use(cors())
+app.use('/uploads', express.static('uploads'));
 
 const items = []
 
@@ -37,10 +38,23 @@ app.use(CategoryROute)
 app.use(cateItemROute)
 app.use(OrderRouter)
 
-// app.get("/products",item)
+// Error handler to return JSON instead of HTML
+app.use((err, req, res, next) => {
+    console.error("Unhandled Error:", err);
 
-// app.post("/products",itemadd)
+    // Handle Multer specific errors
+    if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({
+            error: "File too large",
+            message: "The profile image size must be less than 10MB."
+        });
+    }
 
-// app.delete("/products/:id",deleteitem)
+    res.status(500).json({
+        error: "Internal Server Error",
+        message: err.message,
+        stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
+});
 
 app.listen(PORT, () => console.log(`running on ${PORT}`))

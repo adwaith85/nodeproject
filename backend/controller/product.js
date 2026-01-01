@@ -2,7 +2,7 @@
 import Product from "../model/productmodel.js"
 
 
-export const item = async (req, res) => {
+export const  item = async (req, res) => {
 
     const searchItem = req.query.search;
     console.log("Search term:", searchItem);
