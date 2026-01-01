@@ -58,7 +58,7 @@ function Checkout() {
                 reset();
                 clear();
                 alert("Order placed successfully!");
-                navigate("/order");
+                navigate("/");
             } else {
                 alert("Failed to place order. Please try again.");
             }
