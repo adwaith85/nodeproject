@@ -3,9 +3,17 @@ import Order from "../model/order.js";
 import Usermodel from "../model/userModel.js";
 
 export const ordered = async (req, res) => {
-    const ordered = await Order.find({})
-    console.log("done")
-    res.status(200).json(ordered)
+    try {
+        const user = await Usermodel.findOne({ email: req.user.email });
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+        const userOrders = await Order.find({ userId: user._id }).populate("orderItems.pid");
+        res.status(200).json(userOrders);
+    } catch (err) {
+        console.error("Error fetching orders:", err);
+        res.status(500).json({ error: "Failed to fetch orders" });
+    }
 }
 
 export const getUserOrderCount = async (req, res) => {

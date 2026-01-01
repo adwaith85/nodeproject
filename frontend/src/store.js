@@ -47,6 +47,13 @@ const CartStore = create(
           0
         );
       },
+
+      getQuantity: () => {
+        return get().cart.reduce(
+          (total, item) => total + item.quantity,
+          0
+        );
+      },
     }),
     {
       name: "cart-storage",

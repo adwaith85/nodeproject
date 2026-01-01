@@ -104,6 +104,15 @@
     box-shadow: 0 0 0 2px #4a90e2;
 }
 
+.all-icon {
+    font-size: 24px;
+}
+
+.scroll-spacer {
+    width: calc(50vw - 125px);
+    flex-shrink: 0;
+}
+
 @media (max-width: 768px) {
     .flipkart-category-strip {
         justify-content: flex-start;

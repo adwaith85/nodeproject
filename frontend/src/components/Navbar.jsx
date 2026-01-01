@@ -11,10 +11,17 @@ import { useEffect, useState } from "react";
 import NavLink from "./NavLink";
 
 import AuthStore from "../AuthStore";
+import CartStore from "../store";
 
 function Header({ SetSearchItem }) {
   const { removeToken, token } = AuthStore()
+  const { clear } = CartStore()
   const location = useLocation()
+
+  const handleLogout = () => {
+    removeToken();
+    clear();
+  };
 
   return (
     <Navbar expand="lg" className="navbar" fixed="top">
@@ -54,7 +61,7 @@ function Header({ SetSearchItem }) {
             {!token ? (
               <Link to="/Login" className="nav-link">Login</Link>
             ) : (
-              <button className="nav-link ad" onClick={removeToken}>Logout</button>
+              <button className="nav-link ad" onClick={handleLogout}>Logout</button>
             )}
           </div>
         </Navbar.Collapse>

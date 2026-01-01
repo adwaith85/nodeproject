@@ -1,97 +1,123 @@
-import { useEffect, useState } from "react"
-import './Cart.css'
-import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import ListGroup from "react-bootstrap/ListGroup";
-import Button from "react-bootstrap/Button";
+import { useEffect } from "react";
+import './Cart.css';
 import CartStore from "../store";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Header from "../components/Navbar";
 import AuthStore from "../AuthStore";
-import { Navigate, useNavigate } from "react-router-dom";
 
 function Cart() {
-  const { cart, remove, add, decrease, getTotal } = CartStore();
-  const { token } = AuthStore()
-  console.log(cart)
+  const { cart, remove, add, decrease, clear } = CartStore();
+  const { token } = AuthStore();
 
+  // Explicitly calculate totals in the component for guaranteed reactivity
+  // Added parseFloat(item.price || 0) to handle potential string prices like "two thousand"
+  const totalAmount = cart.reduce((acc, item) => {
+    const price = parseFloat(item.price);
+    return acc + (isNaN(price) ? 0 : price * item.quantity);
+  }, 0);
+  const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
   useEffect(() => {
-    if (cart.length === 0) {
-      console.log("Your cart is empty!");
-      // optional: alert("Your cart is empty!");
-    }
-  }, [cart]);
+    window.scrollTo(0, 0);
+  }, []);
 
+  if (!token) return <Navigate to="/login" />;
 
-  return <><Header />
-    {
-      token ? <>
-        <div className="cart-details">
-          <center><h2>Your Cart</h2></center>
+  return (
+    <>
+      <Header />
+      <div className="cart-page-wrapper">
+        <div className="cart-container-main">
+          {cart.length > 0 ? (
+            <div className="cart-content-layout">
+              <div className="cart-header">
+                <h2>Shopping Bag ({totalItems} {totalItems === 1 ? 'item' : 'items'})</h2>
+                <Link to="/" className="back-to-shop">
+                  ← Continue Shopping
+                </Link>
+              </div>
 
-          <Container >
-            <Row className="flex-column">
-              {cart.map((item) => (
-                <Col key={item.id}>
-                  <Card className="cart">
-                    <Card.Body >
-                      <ListGroup variant="flush">
-                        <div className="cart-container">
-                          <div className="cartimage">
+              <div className="cart-items-list">
+                {cart.map((item) => (
+                  <div key={item.id} className="cart-item-card">
+                    <div className="item-img-container">
+                      <img
+                        className="cart-item-image"
+                        src={item.image}
+                        alt={item.name}
+                      />
+                    </div>
 
+                    <div className="cart-item-info">
+                      <h3 className="cart-item-name">{item.name}</h3>
+                      <div className="item-meta">
+                        <span className="cart-item-price">₹{item.price}</span>
+                        <span className="dash">—</span>
+                        <span className="item-subtotal">Subtotal: ₹{parseFloat(item.price) ? parseFloat(item.price) * item.quantity : 0}</span>
+                      </div>
+                    </div>
 
-                            <img
-                              style={{ width: "10rem", height: "8rem", borderRadius: "9px", borderColor: "black", border: "1px solid" }}
-                              src={item.image}
-                              alt={item.name}
-                            />
+                    <div className="cart-item-actions">
+                      <div className="qty-control-wrapper">
+                        <button
+                          className="qty-btn"
+                          onClick={() => decrease(item.id)}
+                        >
+                          −
+                        </button>
+                        <input
+                          type="text"
+                          className="qty-input"
+                          value={item.quantity}
+                          readOnly
+                        />
+                        <button
+                          className="qty-btn"
+                          onClick={() => add(item)}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        className="remove-item-btn"
+                        onClick={() => remove(item.id)}
+                      >
+                        <span className="trash-icon">🗑️</span> Remove
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-                          </div>
-                          <div className="cart-text">
-                            <ListGroup.Item>{item.name}</ListGroup.Item>
-                            <ListGroup.Item>₹{item.price}</ListGroup.Item>
-                            <div className="quantity-control">
-                              <button onClick={() => decrease(item.id)}>-</button>
-                              <input
-                                type="text"
-                                value={item.quantity}
-                                readOnly
-                              // style={{ width: "40px", textAlign: "center" }}
-                              />
-                              <button onClick={() => add(item)}>+</button>
-                            </div>
-                          </div>
-                          <Button
-                            variant="danger"
-                            className="btn"
-                            onClick={() => remove(item.id)}
-                          >
-                            Remove
-                          </Button>
-                        </div>
-                      </ListGroup>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </Container></div>
-
-        <footer className="footer">
-          <div className="footer-content">
-            <div className="footer-links">
-              <h2>Total Amount = ₹{getTotal()}</h2>
-              <Link to={'/checkout'} className="check">Place order</Link>
+              {/* Bottom Sticky Action Bar */}
+              <div className="cart-bottom-bar">
+                <div className="bottom-bar-content">
+                  <div className="total-info">
+                    <span className="total-label">Total Amount ({totalItems} items)</span>
+                    <span className="total-value">₹{totalAmount}</span>
+                  </div>
+                  <Link to='/checkout' className="checkout-cta-btn">
+                    Place Order Now
+                  </Link>
+                </div>
+              </div>
             </div>
-          </div>
-        </footer>
-
-      </> : <Navigate to={"/login"} />
-    }
-  </>
+          ) : (
+            <div className="empty-cart-container">
+              <div className="empty-cart-visual">
+                <div className="shopping-bag-icon">🎒</div>
+              </div>
+              <h2>Your Bag is Empty</h2>
+              <p>Looks like you haven't added anything to your cart yet. Let's find something amazing for you!</p>
+              <Link to="/" className="checkout-cta-btn empty-cart-btn">
+                Start Exploring
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
 }
 
 export default Cart;

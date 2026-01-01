@@ -129,7 +129,7 @@ function Admin() {
 
         <input ref={nameref} type="text" placeholder="name of the product" onChange={e => Setname(e.target.value)} /><br />
         <input ref={imageref} type="text" placeholder="image of the product" onChange={e => SetImage(e.target.value)} /><br />
-        <input ref={priceref} type="text" placeholder="price of the product" onChange={e => SetPrice(e.target.value)} /><br />
+        <input ref={priceref} type="number" placeholder="price of the product" onChange={e => SetPrice(e.target.value)} /><br />
         <select value={selectCategory} onChange={e => SetSelectedCategory(e.target.value)}>
 
           {

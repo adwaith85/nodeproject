@@ -68,7 +68,7 @@ function Home() {
         {token ? (
           <>
             <HomeCarousel />
-            
+
 
             <div className="home-welcome-section">
               <h1>Welcome to ShopCart</h1>
@@ -272,9 +272,8 @@ function CateOption({ selectedCategory, setSelectedCategory }) {
       <div
         className={`category-tile ${!selectedCategory ? 'active' : ''}`}
         onClick={() => setSelectedCategory(null)}
-        style={{ cursor: 'pointer' }}
       >
-        <div className="category-icon-placeholder" style={{ fontSize: '24px' }}>🏠</div>
+        <div className="category-icon-placeholder all-icon">🏠</div>
         <span className="category-label">All</span>
       </div>
       {categorylist.map((item, index) => (
@@ -282,7 +281,6 @@ function CateOption({ selectedCategory, setSelectedCategory }) {
           className={`category-tile ${selectedCategory === item._id ? 'active' : ''}`}
           key={index}
           onClick={() => setSelectedCategory(item._id)}
-          style={{ cursor: 'pointer' }}
         >
           {item.image && <img src={item.image} alt={item.name} className="category-icon" />}
           <span className="category-label">{item.name}</span>
@@ -329,18 +327,16 @@ function HorizontalScroll({ children }) {
   }, []);
 
   // Spacer to allow first and last card to reach center
-  const spacerStyle = { width: 'calc(50vw - 125px)', flexShrink: 0 };
-
   return (
     <div ref={containerRef} className="horizontal-scroll-container">
-      <div style={spacerStyle} />
+      <div className="scroll-spacer" />
       {React.Children.map(children, (child, index) =>
         React.cloneElement(child, {
           className: `${child.props.className || ""} card${index === centerIndex ? " in-view" : ""}`,
           key: index,
         })
       )}
-      <div style={spacerStyle} />
+      <div className="scroll-spacer" />
     </div>
   );
 }

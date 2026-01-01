@@ -13,7 +13,8 @@ function Order() {
     let res = await fetch("http://localhost:8000/order", {
       method: "GET",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
       },
     })
 
@@ -38,6 +39,7 @@ function Order() {
             <th>Name</th>
             <th>District</th>
             <th>Number</th>
+            <th>Total Price</th>
           </tr>
           {
             order.map(item => <>
@@ -46,6 +48,7 @@ function Order() {
                 <th>{item.name}</th>
                 <th>{item.district}</th>
                 <th>{item.number}</th>
+                <th>₹{item.TotalPrice}</th>
               </tr>
             </>)
           }

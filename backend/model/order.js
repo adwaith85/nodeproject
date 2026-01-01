@@ -1,47 +1,47 @@
 import mongoose from "mongoose";
 
-const OrderItemSchema= new mongoose.Schema({
-    pid:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Item",
-        required:true
+const OrderItemSchema = new mongoose.Schema({
+    pid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        required: true
     },
-    qty:{
-        type:Number,
-        required:true
+    qty: {
+        type: Number,
+        required: true
     }
 })
 const orderSchema = new mongoose.Schema({
-    userId:{
-         type:mongoose.Schema.Types.ObjectId,
-         ref:"Users",
-         required:true
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Users",
+        required: true
     },
-    name:{
-        type:String
+    name: {
+        type: String
     },
-    address:{
-        type:String
+    address: {
+        type: String
     },
-    
-    district:{
-        type:String
+
+    district: {
+        type: String
     },
-    pincode:{
-        type:String
+    pincode: {
+        type: String
     },
-    number:{
-        type:String
+    number: {
+        type: String
     },
-    OrderItem:{
-        type:[OrderItemSchema],
-        required:true
+    orderItems: {
+        type: [OrderItemSchema],
+        required: true
     },
-    TotalPrice:{
-        type:Number
+    TotalPrice: {
+        type: Number
     }
 
-}, {timestamps:true});
+}, { timestamps: true });
 
 const Order = mongoose.model("order", orderSchema);
 export default Order

@@ -10,7 +10,11 @@ function Checkout() {
     console.log(token)
 
 
-    const { cart, getTotal, clear } = CartStore();
+    const { cart, clear } = CartStore();
+    const totalAmount = cart.reduce((acc, item) => {
+        const price = parseFloat(item.price);
+        return acc + (isNaN(price) ? 0 : price * item.quantity);
+    }, 0);
 
     const {
         register,
@@ -89,7 +93,7 @@ function Checkout() {
             </div>
             <div className="checkout-right">
                 <div className="checkout2">
-                    <h2>Total Amount = ₹{getTotal()}</h2>
+                    <h2>Total Amount = ₹{totalAmount}</h2>
                 </div>
                 <div className="checkout3">
                     <form action="" onSubmit={handleSubmit(Upload)}>

@@ -5,7 +5,7 @@ import { LoginCheck } from "../middleware/Auth.js";
 
 const order = express.Router();
 
-order.get("/order", ordered)
+order.get("/order", LoginCheck, ordered)
 order.post("/order", LoginCheck, CreateOrder)
 order.get("/order/count", LoginCheck, getUserOrderCount)
 
