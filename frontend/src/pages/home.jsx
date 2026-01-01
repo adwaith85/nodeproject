@@ -75,7 +75,7 @@ function Home() {
               <p>Discover the best deals on electronics, fashion, and more. Shop now and get exclusive offers!</p>
             </div>
 
-            <CateOption selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+            <CateOption token={token} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 
             <Container fluid>
               <Row>
@@ -244,7 +244,7 @@ function Detail(props) {
   );
 }
 
-function CateOption({ selectedCategory, setSelectedCategory }) {
+function CateOption({ token, selectedCategory, setSelectedCategory }) {
   const [categorylist, setCategorylist] = useState([]);
 
   const getCategory = async () => {
@@ -253,6 +253,7 @@ function CateOption({ selectedCategory, setSelectedCategory }) {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
       });
       if (!res.ok) return;

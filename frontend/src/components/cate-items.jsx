@@ -8,10 +8,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 // import Col from 'react-bootstrap/Col';
 import Header from "./Navbar";
 import { CateOption } from "../pages/home";
+import AuthStore from "../AuthStore";
 
 function DisplayCategory() {
 
     const { name } = useParams()
+    const { token } = AuthStore()
     const [cateItems, setcateItems] = useState([])
     const getcateItems = async () => {
         let res = await fetch(`http://localhost:8000/cateItem/${name}`, {
@@ -30,7 +32,7 @@ function DisplayCategory() {
 
     return <>
         <Header />
-        <CateOption />
+        <CateOption token={token} />
 
         <h2>{name}</h2>
         {

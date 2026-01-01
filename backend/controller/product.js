@@ -1,21 +1,35 @@
-
 import Product from "../model/productmodel.js"
-
+import Category from "../model/cateModel.js"
 
 export const item = async (req, res) => {
-    const { search, category } = req.query;
+    const { search, category: categoryId } = req.query;
     console.log("Search term:", search);
-    console.log("Category ID:", category);
+    console.log("Category ID:", categoryId);
 
     try {
         let query = {};
 
         if (search && search.trim() !== "") {
-            query.name = new RegExp(search, 'i');
+            // Escape special characters to prevent regex breaking
+            const escapedSearch = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const searchRegex = new RegExp(escapedSearch, 'i');
+
+            // Find categories that match the search term
+            const matchedCategories = await Category.find({
+                name: searchRegex
+            }).select('_id');
+
+            const matchedCategoryIds = matchedCategories.map(cat => cat._id);
+
+            // Search in product name OR category ID list
+            query.$or = [
+                { name: searchRegex },
+                { category: { $in: matchedCategoryIds } }
+            ];
         }
 
-        if (category && category !== "null" && category !== "") {
-            query.category = category;
+        if (categoryId && categoryId !== "null" && categoryId !== "") {
+            query.category = categoryId;
         }
 
         let products = await Product.find(query).populate("category").exec();
