@@ -62,9 +62,8 @@
 .navbar-toggle {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    position: absolute;
-    top: 0.7rem;
-    left: 1rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 4px 8px;
 }
 
 .navcontent {
@@ -74,7 +73,7 @@
     position: relative;
     z-index: 1000;
     margin-left: 2rem;
-    
+
 }
 
 /* Search Bar */
@@ -173,7 +172,7 @@
 @media (max-width: 800px) {
     .navbar {
         padding: 0.75rem 1rem;
-    
+
     }
 
     .navbar-collapse {

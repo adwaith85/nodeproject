@@ -26,7 +26,7 @@ function Header({ SetSearchItem }) {
   return (
     <Navbar expand="lg" className="navbar" fixed="top">
       <Container>
-        <div className="d-flex align-items-start gap-2">
+        <div className="d-flex align-items-center gap-3">
           <Navbar.Toggle aria-controls="navbarScroll" className="navbar-toggle" />
           <Navbar.Brand as={Link} to="/" className="navbar-brand me-0">
             Shop<span>Cart</span>
