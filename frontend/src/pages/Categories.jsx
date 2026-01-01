@@ -1,57 +1,138 @@
-import { useRef, useState } from "react"
-import './Admin.css'
+import { useState, useEffect } from "react"
+import './Categories.css'
 import Navbar from "../components/Navbar"
 import AuthStore from "../AuthStore"
-import { Navigate, useNavigate } from "react-router-dom";
+import CartStore from "../store"
+import { Navigate } from "react-router-dom"
+
 function Categories() {
+    const [categoryList, setCategoryList] = useState([]);
+    const [products, setProducts] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-    const nameref = useRef()
-    const imageref = useRef()
+    const { token } = AuthStore();
+    const { add } = CartStore();
 
-    const [name, Setname] = useState("")
-    const [image, SetImage] = useState("")
-    const [loading, Setloading] = useState(false)
-
-    const { token } = AuthStore()
-    console.log(token)
-
-    const Uplodad = async () => {
-        Setloading(true)
-        setTimeout(async () => {
-            await fetch("http://localhost:8000/category", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name: name,
-                    image: image
-                })
-            })
-            nameref.current.value = ""
-            imageref.current.value = ""
-
-            Setloading(false)
-
-        }, 1000);
-
-    }
-    return <><Navbar />
-        {
-            token ?
-
-                <div className="admin">
-
-                    <h2>ADD CATEGORY</h2>
-                    <input ref={nameref} type="text" placeholder="name of the product" onChange={e => Setname(e.target.value)} /><br />
-                    <input ref={imageref} type="text" placeholder="image of the product" onChange={e => SetImage(e.target.value)} /><br />
-                    {
-                        loading ? <h4>Working on it..</h4> : <button onClick={Uplodad}>SUBMIT</button>
-                    }
-
-                </div> : <Navigate to={"/login"} />
+    // Fetch Categories
+    const getCategories = async () => {
+        try {
+            const res = await fetch("http://localhost:8000/category");
+            const data = await res.json();
+            setCategoryList(data);
+        } catch (error) {
+            console.error("Error fetching categories:", error);
         }
-    </>
+    };
+
+    // Fetch Products (optionally filtered by category)
+    const getProducts = async (catId) => {
+        setLoading(true);
+        try {
+            let url = "http://localhost:8000/products";
+            if (catId) url += `?category=${catId}`;
+
+            const res = await fetch(url, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            const data = await res.json();
+            setProducts(data);
+        } catch (error) {
+            console.error("Error fetching products:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        getCategories();
+        getProducts(selectedCategory);
+    }, [selectedCategory]);
+
+    if (!token) return <Navigate to="/login" />;
+
+    return (
+        <>
+            <Navbar />
+            <div className="categories-page-container">
+                <div className="categories-layout">
+                    {/* Left Sidebar: Categories */}
+                    <aside className="categories-sidebar">
+                        <h2 className="sidebar-title">Explore</h2>
+                        <div className="category-options-list">
+                            <button
+                                className={`cat-option-item ${!selectedCategory ? 'active' : ''}`}
+                                onClick={() => setSelectedCategory(null)}
+                            >
+                                <span className="cat-dot"></span> All Products
+                            </button>
+                            {categoryList.map(cat => (
+                                <button
+                                    key={cat._id}
+                                    className={`cat-option-item ${selectedCategory === cat._id ? 'active' : ''}`}
+                                    onClick={() => setSelectedCategory(cat._id)}
+                                >
+                                    {cat.image && <img src={cat.image} alt="" className="cat-mini-icon" />}
+                                    {cat.name}
+                                </button>
+                            ))}
+                        </div>
+                    </aside>
+
+                    {/* Right Main: Product Grid */}
+                    <main className="category-products-main">
+                        <header className="category-main-header">
+                            <h1>
+                                {selectedCategory
+                                    ? categoryList.find(c => c._id === selectedCategory)?.name
+                                    : "All Collections"}
+                            </h1>
+                            <span className="product-count">{products.length} Products Found</span>
+                        </header>
+
+                        {loading ? (
+                            <div className="loader-container">
+                                <div className="loader"></div>
+                                <p>Refining Selection...</p>
+                            </div>
+                        ) : (
+                            <div className="category-products-grid">
+                                {products.length > 0 ? (
+                                    products.map(product => (
+                                        <div key={product._id} className="cat-product-card">
+                                            <div className="product-img-box">
+                                                <img src={product.image} alt={product.name} />
+                                            </div>
+                                            <div className="product-info">
+                                                <span className="product-cat-tag">{product.category?.name}</span>
+                                                <h3>{product.name}</h3>
+                                                <div className="product-card-footer">
+                                                    <span className="price">₹{product.price}</span>
+                                                    <button onClick={() => add({
+                                                        id: product._id,
+                                                        name: product.name,
+                                                        price: product.price,
+                                                        image: product.image
+                                                    })} className="add-to-bag-btn">
+                                                        Add to Bag
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="no-products">
+                                        <h3>No products in this category yet.</h3>
+                                        <p>Try switching to another category or check back later!</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </main>
+                </div>
+            </div>
+        </>
+    );
 }
 
-export default Categories
+export default Categories;
