@@ -37,16 +37,16 @@ function Profile() {
                 number: userData.number || ''
             });
 
-            const orderRes = await fetch("http://localhost:8000/order/count", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                }
-            });
-            const orderData = await orderRes.json();
-            console.log(orderData)
-            setOrderCount(orderData.count || 0);
+            // const orderRes = await fetch("http://localhost:8000/order/count", {
+            //     method: "GET",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         "Authorization": `Bearer ${token}`,
+            //     }
+            // });
+            // const orderData = await orderRes.json();
+            // console.log(orderData)
+            // setOrderCount(orderData.count || 0);
 
         } catch (err) {
             console.error(err);
@@ -247,12 +247,12 @@ function Profile() {
                             </div>
                         )}
 
-                        <div className="stats-section">
+                        {/* <div className="stats-section">
                             <div className="stat-card">
                                 <h4>Total Orders</h4>
                                 <span className="stat-value">{orderCount}</span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

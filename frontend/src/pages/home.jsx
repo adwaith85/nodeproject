@@ -16,6 +16,7 @@ function Home() {
   const [data, SetData] = useState([]);
   const [cart, setCart] = useState([]); // initialize as empty array
   const [searchItem, SetSearchItem] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const navigate = useNavigate();
   const { token } = AuthStore();
@@ -24,7 +25,12 @@ function Home() {
     if (!token) return;
 
     try {
-      let res = await fetch(`http://localhost:8000/products?search=${searchItem}`, {
+      let url = `http://localhost:8000/products?search=${searchItem}`;
+      if (selectedCategory) {
+        url += `&category=${selectedCategory}`;
+      }
+
+      let res = await fetch(url, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +59,7 @@ function Home() {
     if (token) {
       getData();
     }
-  }, [searchItem, token]);
+  }, [searchItem, token, selectedCategory]);
 
   return (
     <>
@@ -62,12 +68,14 @@ function Home() {
         {token ? (
           <>
             <HomeCarousel />
-            <CateOption />
+            
 
             <div className="home-welcome-section">
               <h1>Welcome to ShopCart</h1>
               <p>Discover the best deals on electronics, fashion, and more. Shop now and get exclusive offers!</p>
             </div>
+
+            <CateOption selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
 
             <Container fluid>
               <Row>
@@ -236,7 +244,7 @@ function Detail(props) {
   );
 }
 
-function CateOption() {
+function CateOption({ selectedCategory, setSelectedCategory }) {
   const [categorylist, setCategorylist] = useState([]);
 
   const getCategory = async () => {
@@ -261,11 +269,24 @@ function CateOption() {
 
   return (
     <section className="flipkart-category-strip">
+      <div
+        className={`category-tile ${!selectedCategory ? 'active' : ''}`}
+        onClick={() => setSelectedCategory(null)}
+        style={{ cursor: 'pointer' }}
+      >
+        <div className="category-icon-placeholder" style={{ fontSize: '24px' }}>🏠</div>
+        <span className="category-label">All</span>
+      </div>
       {categorylist.map((item, index) => (
-        <Link to={`/Categories/${item.name}`} className="category-tile" key={index}>
+        <div
+          className={`category-tile ${selectedCategory === item._id ? 'active' : ''}`}
+          key={index}
+          onClick={() => setSelectedCategory(item._id)}
+          style={{ cursor: 'pointer' }}
+        >
           {item.image && <img src={item.image} alt={item.name} className="category-icon" />}
           <span className="category-label">{item.name}</span>
-        </Link>
+        </div>
       ))}
     </section>
   );
