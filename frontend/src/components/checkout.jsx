@@ -1,20 +1,22 @@
 import { useEffect, useState } from "react"
 import './Checkout.css'
-import { useParams } from "react-router-dom"
+import { useParams, Link, useNavigate } from "react-router-dom"
 import CartStore from "../store";
 import { useForm } from "react-hook-form";
 import AuthStore from "../AuthStore";
+import Header from "./Navbar";
 
 function Checkout() {
     const { token } = AuthStore()
-    console.log(token)
-
-
+    const navigate = useNavigate();
     const { cart, clear } = CartStore();
+
     const totalAmount = cart.reduce((acc, item) => {
         const price = parseFloat(item.price);
         return acc + (isNaN(price) ? 0 : price * item.quantity);
     }, 0);
+
+    const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
     const {
         register,
@@ -23,18 +25,14 @@ function Checkout() {
         formState: { errors },
     } = useForm();
 
-
-    console.log(cart)
-
-
-
     useEffect(() => {
-        if (cart.length === 0) {
-            console.log("Your cart is empty!");
-            // optional: alert("Your cart is empty!");
+        if (!token) {
+            navigate("/login");
         }
-    }, [cart]);
-
+        if (cart.length === 0) {
+            // navigate("/cart");
+        }
+    }, [cart, token, navigate]);
 
     const Upload = async (data) => {
         try {
@@ -43,7 +41,6 @@ function Checkout() {
                 headers: {
                     "content-type": "application/JSON",
                     Authorization: `Bearer ${token}`,
-
                 },
                 body: JSON.stringify({
                     name: data.name,
@@ -55,60 +52,153 @@ function Checkout() {
                         pid: item.id,
                         qty: item.quantity
                     })),
-
                 }),
-
             });
             if (res.ok) {
-                reset;
-                clear()
-                alert("order placed successfully!");
-
+                reset();
+                clear();
+                alert("Order placed successfully!");
+                navigate("/order");
             } else {
-                alert("failed to order");
-
+                alert("Failed to place order. Please try again.");
             }
         } catch (err) {
-            console.error(err)
-            alert("an error occurred");
+            console.error(err);
+            alert("An error occurred while placing your order.");
         }
     };
 
+    if (cart.length === 0) {
+        return (
+            <>
+                <Header />
+                <div className="empty-checkout">
+                    <div className="empty-visual">🛍️</div>
+                    <h2>No Items to Checkout</h2>
+                    <p>Your bag is empty. Add some products before checking out.</p>
+                    <Link to="/" className="continue-btn">Go Shopping</Link>
+                </div>
+            </>
+        );
+    }
 
-    return <>
-        <div className="checkout-container">
-            <div className="checkout-left">
-                {
-                    cart.map(item => <>
-                        <div className="checkout1">
-                            <img src={item.image} alt="" />
-                            <h2>{item.name}-{item.quantity}</h2>
+    return (
+        <>
+            <Header />
+            <div className="checkout-page-wrapper">
+                <div className="checkout-grid-container">
 
+                    {/* Left: Shipping Details Form */}
+                    <div className="shipping-details-section">
+                        <div className="section-card">
+                            <h2 className="section-title">Shipping Information</h2>
+                            <form className="checkout-form" onSubmit={handleSubmit(Upload)}>
+                                <div className="form-group">
+                                    <label>Full Name</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Enter your full name"
+                                        {...register("name", { required: "Name is required" })}
+                                    />
+                                    {errors.name && <span className="error-msg">{errors.name.message}</span>}
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Delivery Address</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Flat, House no., Building, Company, Apartment"
+                                        {...register("address", { required: "Address is required" })}
+                                    />
+                                    {errors.address && <span className="error-msg">{errors.address.message}</span>}
+                                </div>
+
+                                <div className="form-row">
+                                    <div className="form-group">
+                                        <label>District / City</label>
+                                        <input
+                                            type="text"
+                                            placeholder="City"
+                                            {...register("district", { required: "District is required" })}
+                                        />
+                                        {errors.district && <span className="error-msg">{errors.district.message}</span>}
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Pincode</label>
+                                        <input
+                                            type="number"
+                                            placeholder="6-digit Pincode"
+                                            {...register("pincode", { required: "Pincode is required", minLength: 6 })}
+                                        />
+                                        {errors.pincode && <span className="error-msg">{errors.pincode.message}</span>}
+                                    </div>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Phone Number</label>
+                                    <div className="phone-input-wrapper">
+                                        <span className="prefix">+91</span>
+                                        <input
+                                            type="number"
+                                            placeholder="10-digit mobile number"
+                                            {...register("number", { required: "Number is required", minLength: 10 })}
+                                        />
+                                    </div>
+                                    {errors.number && <span className="error-msg">{errors.number.message}</span>}
+                                </div>
+
+                                <button type="submit" className="confirm-order-btn-main">
+                                    Confirm and Place Order
+                                </button>
+                            </form>
                         </div>
+                    </div>
 
+                    {/* Right: Order Summary */}
+                    <div className="order-summary-section">
+                        <div className="summary-sticky-card">
+                            <h2 className="section-title">Order Summary</h2>
 
-                    </>)
+                            <div className="checkout-items-list">
+                                {cart.map(item => (
+                                    <div key={item.id} className="checkout-item-mini">
+                                        <div className="mini-img-box">
+                                            <img src={item.image} alt={item.name} />
+                                            <span className="mini-qty-badge">{item.quantity}</span>
+                                        </div>
+                                        <div className="mini-details">
+                                            <p className="mini-name">{item.name}</p>
+                                            <p className="mini-price">₹{(parseFloat(item.price) || 0) * item.quantity}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
 
-                }
-            </div>
-            <div className="checkout-right">
-                <div className="checkout2">
-                    <h2>Total Amount = ₹{totalAmount}</h2>
+                            <div className="summary-totals">
+                                <div className="total-row">
+                                    <span>Subtotal</span>
+                                    <span>₹{totalAmount}</span>
+                                </div>
+                                <div className="total-row">
+                                    <span>Shipping</span>
+                                    <span className="free-tag">FREE</span>
+                                </div>
+                                <div className="total-row final">
+                                    <span>Grand Total</span>
+                                    <span>₹{totalAmount}</span>
+                                </div>
+                            </div>
+
+                            <p className="secure-badge">
+                                🔒 Secure SSL Encrypted Checkout
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
-                <div className="checkout3">
-                    <form action="" onSubmit={handleSubmit(Upload)}>
-                        Name
-                        <input type="text" placeholder="name"   {...register("name", { required: "Name is required" })} /><br />
-                        Address <input type="text" placeholder="address"   {...register("address", { required: "Address is required" })} /><br />
-                        District <input type="text" placeholder="district"  {...register("district", { required: "District is required" })} /><br />
-                        Pincode <input type="number" placeholder="pincode"   {...register("pincode", { required: "Pincode is required" })} /><br />
-                        Phone Number <input type="number" placeholder="number"  {...register("number", { required: "Number is required" })} /><br />
-                        <button>SUBMIT</button>
-                    </form>
-                </div>
             </div>
-        </div>
-    </>
+        </>
+    );
 }
 
-export default Checkout
+export default Checkout;
