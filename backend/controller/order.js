@@ -69,6 +69,18 @@ export const CreateOrder = async (req, res) => {
     } catch (err) {
         console.error("error created:", err);
         res.status(500).json({ error: "failed to order" });
+    }
+};
 
+export const getAllOrders = async (req, res) => {
+    try {
+        const allOrders = await Order.find()
+            .populate("userId", "name email")
+            .populate("orderItems.pid")
+            .sort({ createdAt: -1 });
+        res.status(200).json(allOrders);
+    } catch (err) {
+        console.error("Error fetching all orders:", err);
+        res.status(500).json({ error: "Failed to fetch all orders" });
     }
 };
