@@ -62,7 +62,8 @@ function Profile() {
             });
 
             // Axios treats 2xx as success, throws on 4xx/5xx
-            const updatedUser = res.data;
+            // The backend returns { message, user: { ... } }
+            const updatedUser = res.data.user || res.data;
             setUser(updatedUser);
             setSelectedImage(null);
             setImagePreview(null);
@@ -87,7 +88,7 @@ function Profile() {
                 },
             });
 
-            const updatedUser = res.data;
+            const updatedUser = res.data.user || res.data;
             setUser(updatedUser);
             setIsEditingDetails(false);
             alert("Profile details updated successfully!");
@@ -144,8 +145,8 @@ function Profile() {
                             </div>
                         )}
 
-                        <h2 className="profile-name">{user.name || "User Name"}</h2>
-                        <p className="profile-email">{user.email || "email@example.com"}</p>
+                        <h2 className="profile-name">{user?.name || "User Name"}</h2>
+                        <p className="profile-email">{user?.email || "email@example.com"}</p>
                     </div>
 
                     {/* Content Section */}
@@ -172,7 +173,7 @@ function Profile() {
                                         placeholder="Enter your name"
                                     />
                                 ) : (
-                                    <div className="info-display">{user.name || "-"}</div>
+                                    <div className="info-display">{user?.name || "-"}</div>
                                 )}
                             </div>
 
@@ -188,13 +189,13 @@ function Profile() {
                                         placeholder="Enter phone number"
                                     />
                                 ) : (
-                                    <div className="info-display">{user.number || "-"}</div>
+                                    <div className="info-display">{user?.number || "-"}</div>
                                 )}
                             </div>
 
                             <div className="form-group full-width">
                                 <label>Email Address</label>
-                                <div className="info-display locked">{user.email}</div>
+                                <div className="info-display locked">{user?.email}</div>
                             </div>
                         </div>
 
